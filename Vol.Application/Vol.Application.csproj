@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="Hangfire.Core" Version="1.7.24" />
+		<PackageReference Include="IdentityModel" Version="5.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+		<PackageReference Include="RazorLight" Version="2.0.0-rc.3" />
+		<PackageReference Include="SendGrid" Version="9.23.0" />
+		<PackageReference Include="Serilog" Version="2.8.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Vol.Application.Contracts\Vol.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\Vol.Domain\Vol.Domain.csproj" />
+	</ItemGroup>
+</Project>
