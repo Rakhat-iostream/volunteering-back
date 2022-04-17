@@ -9,15 +9,25 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Prometheus;
 using Prometheus.DotNetRuntime;
+using SendGrid;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Vol.Domain.Users;
+using Vol;
+using Vol.Common;
 using Vol.EntityFrameworkCore;
+using Vol.Filters;
 using Vol.Infrastructure;
+using Vol.Services;
+using Vol.Users;
+using Vol.V1.Account;
+using Vol.V1.Common;
+using Vol.V1.Emails;
+using Vol.V1.Events;
+using Vol.V1.Users;
 
 namespace volunteering_back
 {
@@ -36,8 +46,8 @@ namespace volunteering_back
         {
             Collector = DotNetRuntimeStatsBuilder.Default().StartCollecting();
 
-            //services.AddScoped<UnitOfWorkFilter>();
-            /*services.AddControllers(options =>
+            services.AddScoped<UnitOfWorkFilter>();
+            services.AddControllers(options =>
             {
                 options.Filters.Add(new ExceptionFilter());
                 options.Filters.AddService<UnitOfWorkFilter>(1);
@@ -47,7 +57,7 @@ namespace volunteering_back
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 });
-            });*/
+            });
 
             ConfigureCors(services, Configuration);
             ConfigureSwaggerServices(services, Configuration);
@@ -63,20 +73,20 @@ namespace volunteering_back
             services.AddHealthChecks().ForwardToPrometheus();
 
             /*services.AddSingleton<IFacebookProvider, FacebookProvider>();
-            services.AddSingleton<IGoogleProvider, GoogleProvider>();
-            services.AddSingleton<ITaxProvider, TaxProvider>();
+            services.AddSingleton<IGoogleProvider, GoogleProvider>();*/
             services.AddSingleton<IEmailService, EmailService>();
             services.AddSingleton<ITemplateRenderer, TemplateRenderer>();
             services.AddSingleton<IEmailSender, SendGridEmailSender>();
             services.AddSingleton<ICallbackUrlService, CallbackUrlService>();
-            services.AddSingleton<IPasswordsGenService, PasswordsGenService>();*/
+            services.AddSingleton<IPasswordsGenService, PasswordsGenService>();
 
-            //services.AddSingleton<SendGridClient>(new SendGridClient(Configuration["SendGrid:ApiKey"]));
+            services.AddSingleton<SendGridClient>(new SendGridClient(Configuration["SendGrid:ApiKey"]));
             services.AddSingleton(Configuration.GetSection("Centrifugo").Get<CentrifugoSettings>());
-            //services.AddScoped<IEventEmitter, EventEmitter>();
+            services.AddScoped<IEventEmitter, EventEmitter>();
 
             services.AddScoped<IAccountAppService, AccountAppService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ILanguageSwitcherService, LanguageSwitcherService>();
 
 
@@ -86,9 +96,8 @@ namespace volunteering_back
             .AddEntityFrameworkStores<VolDbContext>()
             .AddDefaultTokenProviders();
 
-            //services.AddAutoMapper(typeof(HaxpeApplicationAutoMapperProfile));
+            services.AddAutoMapper(typeof(VolApplicationAutoMapperProfile));
             services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
-            //services.AddScoped(typeof(IStatisticsRepository<,>), typeof(StatisticsRepository<,>));
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -132,7 +141,7 @@ namespace volunteering_back
             });
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Haxpe v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vol v1"));
 
             if (env.IsDevelopment())
             {
@@ -214,7 +223,7 @@ namespace volunteering_back
             services.AddSwaggerGen(
                 options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Haxpe API", Version = "v1" });
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Vol API", Version = "v1" });
                     options.DocInclusionPredicate((docName, description) => true);
                 });
             services.AddSwaggerGenNewtonsoftSupport();

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Vol.Infrastructure;
 
-namespace Vol.Domain.Users
+namespace Vol.Users
 {
     public class User : IdentityUser<Guid>, IAggregateRoot<Guid>
     {

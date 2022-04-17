@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Vol.Application.Contracts\Vol.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\Vol.Domain.Shared\Vol.Domain.Shared.csproj" />
 	  <ProjectReference Include="..\Vol.Domain\Vol.Domain.csproj" />
 	</ItemGroup>
 </Project>

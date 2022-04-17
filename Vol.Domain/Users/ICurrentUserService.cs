@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vol.Domain.Users
+namespace Vol.Users
 {
     public interface ICurrentUserService
     {
