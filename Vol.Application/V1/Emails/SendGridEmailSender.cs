@@ -21,7 +21,7 @@ namespace Vol.V1.Emails
         public async Task SendAsync(string address, string subject, string body)
         {
             var message = MailHelper.CreateSingleEmail(
-                new EmailAddress("noreply@haxpe.com", "Haxpe"),
+                new EmailAddress("iskrobraz@mail.ru", "Vol"),
                 new EmailAddress(address),
                 subject,
                 null,

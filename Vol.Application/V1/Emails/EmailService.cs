@@ -21,42 +21,42 @@ namespace Vol.V1.Emails
 
         public Task SendCustomerRegistrationConfirm(string emailAddress, string language, CustomerRegistrationConfirmModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         public Task SendCustomerWelcome(string emailAddress, string language, CustomerWelcomeModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         public Task SendPartnerRegistrationConfirm(string emailAddress, string language, PartnerRegistrationConfirmModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         public Task SendPartnerVerificationFailed(string emailAddress, string language, PartnerVerificationFailedModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         public Task SendPartnerWelcome(string emailAddress, string language, PartnerWelcomeModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         public Task SendPasswordResetLink(string emailAddress, string language, ResetPasswordModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         public Task SendThanksForOrder(string emailAddress, string language, ThanksForOrderModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         public Task SendWorkerRegistrationConfirm(string emailAddress, string language, WorkerRegistrationConfirmModel model)
         {
-            return Send(emailAddress, language, "Haxpe", model);
+            return Send(emailAddress, language, "Vol", model);
         }
 
         private async Task Send<T>(string address, string language, string subject, T model)
