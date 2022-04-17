@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -7,5 +7,9 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0-preview.1.21103.6" />
 		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Vol.Domain.Shared\Vol.Domain.Shared.csproj" />
 	</ItemGroup>
 </Project>
