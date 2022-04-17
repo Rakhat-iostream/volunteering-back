@@ -5,17 +5,19 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.HttpApi.Host", "volunteering-back\Vol.HttpApi.Host.csproj", "{AFD3C42B-F33C-459D-BA5E-569C1CAC0C51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vol.Domain", "Vol.Domain\Vol.Domain.csproj", "{E40D0F1A-C5F9-44EE-ADFB-215F8F3AD437}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.Domain", "Vol.Domain\Vol.Domain.csproj", "{E40D0F1A-C5F9-44EE-ADFB-215F8F3AD437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vol.Domain.Shared", "Vol.Domain.Shared\Vol.Domain.Shared.csproj", "{C9CAFC31-1977-4A77-B788-9CD2714430FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.Domain.Shared", "Vol.Domain.Shared\Vol.Domain.Shared.csproj", "{C9CAFC31-1977-4A77-B788-9CD2714430FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vol.EntityFrameworkCore", "Vol.EntityFrameworkCore\Vol.EntityFrameworkCore.csproj", "{1A5186FB-42FA-4F0B-9745-B50AD8ED441E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.EntityFrameworkCore", "Vol.EntityFrameworkCore\Vol.EntityFrameworkCore.csproj", "{1A5186FB-42FA-4F0B-9745-B50AD8ED441E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vol.EntityFrameworkCore.DbMigrations", "Vol.EntityFrameworkCore.DbMigrations\Vol.EntityFrameworkCore.DbMigrations.csproj", "{DA2C67CB-A3A1-428D-83A2-CFA11EFA1152}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.EntityFrameworkCore.DbMigrations", "Vol.EntityFrameworkCore.DbMigrations\Vol.EntityFrameworkCore.DbMigrations.csproj", "{DA2C67CB-A3A1-428D-83A2-CFA11EFA1152}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vol.Application", "Vol.Application\Vol.Application.csproj", "{EF863657-E6EA-40C2-A83F-CDF66A4C1727}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.Application", "Vol.Application\Vol.Application.csproj", "{EF863657-E6EA-40C2-A83F-CDF66A4C1727}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vol.Application.Contracts", "Vol.Application.Contracts\Vol.Application.Contracts.csproj", "{B467EAFD-8274-4B3F-A61F-7B3DB5897212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.Application.Contracts", "Vol.Application.Contracts\Vol.Application.Contracts.csproj", "{B467EAFD-8274-4B3F-A61F-7B3DB5897212}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vol.DbMigrator", "Vol.DbMigrator\Vol.DbMigrator.csproj", "{442FA0BD-1FB4-463F-B424-94BBF5D55CE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{B467EAFD-8274-4B3F-A61F-7B3DB5897212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B467EAFD-8274-4B3F-A61F-7B3DB5897212}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B467EAFD-8274-4B3F-A61F-7B3DB5897212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{442FA0BD-1FB4-463F-B424-94BBF5D55CE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{442FA0BD-1FB4-463F-B424-94BBF5D55CE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{442FA0BD-1FB4-463F-B424-94BBF5D55CE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{442FA0BD-1FB4-463F-B424-94BBF5D55CE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
