@@ -61,12 +61,12 @@ namespace Vol.V1.Emails
 
         private async Task Send<T>(string address, string language, string subject, T model)
         {
-            var body = await this.templateRenderer.RenderAsync(
+            /*var body = await this.templateRenderer.RenderAsync(
                 typeof(T).Name.Replace("Model", ""),
                 model,
                 cultureName: language
-            );
-
+            );*/
+            var body = "empty";
             await this.emailSender.SendAsync(
                 address,
                 subject,

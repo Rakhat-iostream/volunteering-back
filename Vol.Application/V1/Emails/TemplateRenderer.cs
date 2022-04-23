@@ -24,7 +24,7 @@ namespace Vol.V1.Emails
         {
             var culture = new CultureInfo(cultureName);
             var res = typeof(TemplateRenderer).Assembly.GetManifestResourceNames();
-            var key = $"Haxpe.Emails.{templateName}.{culture.TwoLetterISOLanguageName}.cshtml";
+            var key = $"Vol.Emails.{templateName}.{culture.TwoLetterISOLanguageName}.cshtml";
             string result = await engine.CompileRenderAsync(key, model);
             return result;
         }
