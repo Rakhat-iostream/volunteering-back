@@ -236,8 +236,8 @@ namespace volunteering_back
                 options.AddPolicy("Default", builder =>
                 {
                     builder
-                        .WithOrigins("http://localhost:3000",
-                            "https://localhost:3000",
+                        .WithOrigins("http://localhost:4200",
+                            "https://localhost:4200",
                             "http://localhost",
                             "http://94.237.100.88",
                             "http://94.237.100.88:8081",
