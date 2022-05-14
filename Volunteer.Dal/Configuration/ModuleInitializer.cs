@@ -21,7 +21,7 @@ namespace Volunteer.Dal.Configuration
 
         private static void SetSettings(IServiceCollection services, IConfiguration configuration)
         {
-            var connecionString = configuration.GetConnectionString("NMDatabase");
+            var connecionString = configuration.GetConnectionString("Database");
             services.AddDbContext<VolContext>(options =>
             {
                 options.UseNpgsql(connecionString);
