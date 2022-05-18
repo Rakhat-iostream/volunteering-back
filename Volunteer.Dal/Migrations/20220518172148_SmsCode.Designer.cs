@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volunteer.Dal.SqlContext;
@@ -9,9 +10,10 @@ using Volunteer.Dal.SqlContext;
 namespace Volunteer.Dal.Migrations
 {
     [DbContext(typeof(VolContext))]
-    partial class VolContextModelSnapshot : ModelSnapshot
+    [Migration("20220518172148_SmsCode")]
+    partial class SmsCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,10 +82,7 @@ namespace Volunteer.Dal.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("FullName")
                         .HasColumnType("text");
 
                     b.Property<string>("Login")
@@ -121,10 +120,9 @@ namespace Volunteer.Dal.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2022, 5, 18, 17, 46, 4, 254, DateTimeKind.Utc).AddTicks(4274),
+                            CreatedAt = new DateTime(2022, 5, 18, 17, 21, 47, 959, DateTimeKind.Utc).AddTicks(4267),
                             Email = "admin@admin.com",
-                            FirstName = "Admin",
-                            LastName = "Admin",
+                            FullName = "Admin Admin",
                             Login = "admin",
                             PasswordHash = "admin",
                             Phone = "+77071234567",

@@ -1,10 +1,13 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Volunteer.Common.Crypto;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.Domain.Enum;
 using Volunteer.Common.Models.DTOs;
+using Volunteer.Common.Models.DTOs.Auth;
+using Volunteer.Common.Models.DTOs.User;
 using Volunteer.Common.Repositories.Auth;
 using Volunteer.Common.Repositories.Users;
 using Volunteer.Common.Services.Auth;
@@ -16,13 +19,14 @@ namespace Volunteer.BL.Services.Auth
     {
         private readonly IAccessTokenService _accessTokenService;
         private readonly IRefreshTokenService _refreshTokenService;
-        //private readonly ISmsTokenService _smsTokenService;
+        private readonly ISmsTokenService _smsTokenService;
 
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IUserRepository _userRepository;
 
         private readonly IPasswordHasher _passwordHasher;
         private readonly ITokenValidator _tokenValidator;
+        private readonly IMapper _mapper;
 
 
         public AuthenticationService(IAccessTokenService accessTokenService, 
@@ -30,19 +34,21 @@ namespace Volunteer.BL.Services.Auth
             IUserRepository userRepository, 
             IPasswordHasher passwordHasher,
             ITokenValidator tokenValidator, 
-            /*ISmsTokenService smsTokenService,*/ 
-            IRefreshTokenRepository refreshTokenRepository)
+            ISmsTokenService smsTokenService, 
+            IRefreshTokenRepository refreshTokenRepository,
+            IMapper mapper)
         {
             _accessTokenService = accessTokenService;
             _refreshTokenService = refreshTokenService;
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _tokenValidator = tokenValidator;
-            //_smsTokenService = smsTokenService;
+            _smsTokenService = smsTokenService;
             _refreshTokenRepository = refreshTokenRepository;
+            _mapper = mapper;
         }
 
-        /*public async Task<bool> VerifySmsCode(string phone, string code, CancellationToken cancellationToken)
+        public async Task<bool> VerifySmsCode(string phone, string code, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetAsyncByPhone(phone, cancellationToken);
 
@@ -84,7 +90,7 @@ namespace Volunteer.BL.Services.Auth
             // What if code didn`t send?
 
             return code;
-        }*/
+        }
 
         public async Task<AuthenticateResponse> GetTokenByLogin(string login, string password, CancellationToken cancellationToken)
         {
@@ -99,17 +105,19 @@ namespace Volunteer.BL.Services.Auth
 
         public async Task<AuthenticateResponse> RefreshToken(string refreshToken, CancellationToken cancellationToken)
         {
-            if (!_tokenValidator.Validate(refreshToken))
-            {
-                throw new Exception("Invalid token");
-            }
-
             var token = await _refreshTokenRepository.GetAsync(refreshToken, cancellationToken);
 
             if (token is null)
             {
                 throw new Exception("Invalid token");
             }
+
+            if (!_tokenValidator.Validate(refreshToken))
+            {
+                await _refreshTokenRepository.DeleteAsync(token, cancellationToken);
+                throw new Exception("Invalid token");
+            }
+
 
             await _refreshTokenRepository.DeleteAsync(token, cancellationToken);
 
@@ -121,6 +129,20 @@ namespace Volunteer.BL.Services.Auth
             }
 
             return await Authenticate(user, cancellationToken);
+        }
+
+        public async Task<UserProfileDto> RegisterAsync(UserRegisterOrRecoveryDto dto, CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.CreateAsync(dto);
+
+            await Authenticate(user, cancellationToken);
+            return await this.GetUserProfile(user);
+        }
+
+        private async Task<UserProfileDto> GetUserProfile(User user)
+        {
+            var res = _mapper.Map<User, UserProfileDto>(user);
+            return res;
         }
 
         public async Task<AuthenticateResponse> UserRegister(string phone, string password, string repeatPassword, CancellationToken cancellationToken)
@@ -156,8 +178,9 @@ namespace Volunteer.BL.Services.Auth
                     throw new Exception("Not allowed");
                 }
 
-                if (user.Status == UserStatus.InActive || user.Status == UserStatus.Verified)
+                if (user.Status != UserStatus.Active)
                 {
+
                     return false;
                 }
 

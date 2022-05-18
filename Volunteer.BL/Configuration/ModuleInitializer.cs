@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Volunteer.BL.Services.Auth;
 using Volunteer.BL.Services.Auth.Jwt;
+using Volunteer.BL.Services.Auth.Sms;
 using Volunteer.Common.Services.Auth;
 using Volunteer.Common.Services.Auth.Token;
 
@@ -15,7 +16,7 @@ namespace Volunteer.BL.Configuration
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<ITokenValidator, TokenValidator>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            //services.AddScoped<ISmsTokenService, SmsTokenService>();
+            services.AddScoped<ISmsTokenService, SmsTokenService>();
 
             //services.AddScoped<IUserService, UserService>();
 

@@ -28,7 +28,8 @@ namespace Volunteer.Dal.SqlContext.Configuration
                     Phone = "+77071234567",
                     Role = UserRoles.Administrator,
                     Status = UserStatus.Active,
-                    FullName = "Admin Admin"
+                    FirstName = "Admin",
+                    LastName = "Admin"
                 });
         }
     }

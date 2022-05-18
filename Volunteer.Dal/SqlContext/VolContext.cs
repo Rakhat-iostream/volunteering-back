@@ -20,14 +20,14 @@ namespace Volunteer.Dal.SqlContext
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration())
-                //.ApplyConfiguration(new SmsCodeConfiguration())
+                .ApplyConfiguration(new SmsCodeConfiguration())
                 .ApplyConfiguration(new UserConfiguration());
         }
 
 
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-        //public DbSet<SmsCode> SmsCodes { get; set; }
+        public DbSet<SmsCode> SmsCodes { get; set; }
 
     }
 }

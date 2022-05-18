@@ -30,7 +30,7 @@ namespace Volunteer.Dal.Configuration
 
         private static void AddDependenciesToContainer(IServiceCollection services)
         {
-            //services.AddTransient<ISmsTokenRepository, SmsTokenRepository>();
+            services.AddTransient<ISmsTokenRepository, SmsTokenRepository>();
             services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
 
             services.AddTransient<IUserRepository, UserRepository>();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Volunteer.Common.Models.Domain;
+using Volunteer.Common.Models.DTOs.User;
 
 namespace Volunteer.Configuration
 {
@@ -13,6 +14,8 @@ namespace Volunteer.Configuration
             CreateMap<UserAddActionDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password));
             CreateMap<User, UserDto>();*/
+
+            CreateMap<User, UserProfileDto>();
         }
     }
 }

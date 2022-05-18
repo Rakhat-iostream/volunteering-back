@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Volunteer.Common.Crypto;
 using Volunteer.Common.Models.Domain;
+using Volunteer.Common.Models.DTOs.Auth;
 using Volunteer.Common.Repositories.Users;
 using Volunteer.Dal.SqlContext;
 
@@ -14,10 +16,12 @@ namespace Volunteer.Dal.Repositories.Users
     public class UserRepository : IUserRepository
     {
         private readonly VolContext _db;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserRepository(VolContext db)
+        public UserRepository(VolContext db, IPasswordHasher passwordHasher)
         {
             _db = db;
+            _passwordHasher = passwordHasher;
         }
 
 
@@ -49,6 +53,27 @@ namespace Volunteer.Dal.Repositories.Users
             return await _db.Users.FirstOrDefaultAsync((u => u.Phone == phone), cancellationToken);
         }
 
+        public async Task<User> CreateAsync(UserRegisterOrRecoveryDto dto)
+        {
+            var user = new User
+            {
+                Id = new int(),
+                Login = dto.Login,
+                Phone = dto.Phone,
+                Email = dto.Email,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                PasswordHash = _passwordHasher.Hash(dto.Password)
+            };
+
+            //user.SetFullName(dto.FirstName, dto.LastName);
+
+            var result = _db.Users.Add(user);
+            await _db.SaveChangesAsync();
+
+            return result.Entity;
+        }
+
         public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken)
         {
             var entity = await _db.Users.FirstOrDefaultAsync((u => u.Id == user.Id), cancellationToken: cancellationToken);
@@ -56,7 +81,8 @@ namespace Volunteer.Dal.Repositories.Users
             entity.Login = user.Login ?? entity.Login;
             entity.Phone = user.Phone ?? entity.Phone;
             entity.Email = user.Email ?? entity.Email;
-            entity.FullName = user.FullName ?? entity.FullName;
+            entity.FirstName = user.FirstName ?? entity.FirstName;
+            entity.LastName = user.LastName ?? entity.LastName;
             entity.PasswordHash = user.PasswordHash ?? entity.PasswordHash;
             entity.Role = user.Role;
             entity.Status = user.Status;

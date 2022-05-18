@@ -107,7 +107,7 @@ namespace Volunteer.Controllers
 
         //SMS Auth
 
-        /*[HttpPost("request-code")]
+        [HttpPost("request-code")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         public async Task<IActionResult> Code(RequestCodeDto dto, CancellationToken cancellationToken)
@@ -150,7 +150,29 @@ namespace Volunteer.Controllers
 
                 return BadRequest(error.Value);
             }
-        }*/
+        }
+
+        [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AuthenticateResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        public async Task<IActionResult> RegisterAsync(UserRegisterOrRecoveryDto dto, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _authService.RegisterAsync(dto, cancellationToken);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
 
         //SMS Registration
 
