@@ -46,7 +46,7 @@ namespace Volunteer.Dal.Repositories.Users
 
         public async Task<User> GetAsyncByLogin(string login, CancellationToken cancellationToken)
         {
-            return await _db.Users.FirstOrDefaultAsync((u => u.Login == login), cancellationToken);
+            return await _db.Users.AsNoTracking().FirstOrDefaultAsync((u => u.Login == login), cancellationToken);
         }
         public async Task<User> GetAsyncByPhone(string phone, CancellationToken cancellationToken = default)
         {
@@ -77,7 +77,7 @@ namespace Volunteer.Dal.Repositories.Users
 
         public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken)
         {
-            var entity = await _db.Users.FirstOrDefaultAsync((u => u.Id == user.Id), cancellationToken: cancellationToken);
+            var entity = await _db.Users.AsNoTracking().FirstOrDefaultAsync((u => u.Id == user.Id), cancellationToken: cancellationToken);
 
             entity.Login = user.Login ?? entity.Login;
             entity.Phone = user.Phone ?? entity.Phone;

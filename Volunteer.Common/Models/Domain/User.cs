@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Volunteer.Common.Models.Domain.Enum;
 
 namespace Volunteer.Common.Models.Domain
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
         public string Login { get; set; }
         public string PasswordHash { get; set; }

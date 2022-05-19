@@ -28,6 +28,9 @@ namespace Volunteer.Dal.SqlContext
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<SmsCode> SmsCodes { get; set; }
+        public DbSet<Common.Models.Domain.Volunteer> Volunteers { get; set; }
+        public DbSet<Organization> Organizations { get; set; }
+        //public DbSet<Membership> Memberships { get; set; }
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.User;
+using Volunteer.Common.Models.DTOs.Volunteers;
 
 namespace Volunteer.Configuration
 {
@@ -15,7 +16,10 @@ namespace Volunteer.Configuration
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password));
             CreateMap<User, UserDto>();*/
 
-            CreateMap<User, UserProfileDto>();
+            CreateMap<User, UserProfileDto>().ReverseMap();
+            CreateMap<User, VolunteerProfileDto>().ReverseMap();
+            CreateMap<Common.Models.Domain.Volunteer, VolunteerAddDto>().ReverseMap();
+            CreateMap<Common.Models.Domain.Volunteer, VolunteerProfileDto>().ReverseMap();
         }
     }
 }
