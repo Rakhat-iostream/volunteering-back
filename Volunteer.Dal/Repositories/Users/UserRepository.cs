@@ -63,7 +63,8 @@ namespace Volunteer.Dal.Repositories.Users
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                PasswordHash = _passwordHasher.Hash(dto.Password)
+                PasswordHash = _passwordHasher.Hash(dto.Password),
+                Role = dto.Role ?? 0,
             };
 
             //user.SetFullName(dto.FirstName, dto.LastName);

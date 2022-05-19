@@ -4,6 +4,7 @@ namespace Volunteer.Common.Models.Domain.Enum
 {
     public enum UserRoles
     {
+        None,
         [Description("User")]
         User,
 

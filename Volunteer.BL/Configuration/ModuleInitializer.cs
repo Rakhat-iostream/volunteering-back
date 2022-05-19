@@ -2,8 +2,10 @@
 using Volunteer.BL.Services.Auth;
 using Volunteer.BL.Services.Auth.Jwt;
 using Volunteer.BL.Services.Auth.Sms;
+using Volunteer.BL.Services.Users;
 using Volunteer.Common.Services.Auth;
 using Volunteer.Common.Services.Auth.Token;
+using Volunteer.Common.Services.Users;
 
 namespace Volunteer.BL.Configuration
 {
@@ -18,7 +20,7 @@ namespace Volunteer.BL.Configuration
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ISmsTokenService, SmsTokenService>();
 
-            //services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
 
 
             return services;
