@@ -19,6 +19,7 @@ namespace Volunteer.Configuration
             CreateMap<User, UserProfileDto>().ReverseMap();
             CreateMap<User, VolunteerProfileDto>().ReverseMap();
             CreateMap<Common.Models.Domain.Volunteer, VolunteerAddDto>().ReverseMap();
+            CreateMap<Common.Models.Domain.Volunteer, VolunteerUpdateDto>().ReverseMap();
             CreateMap<Common.Models.Domain.Volunteer, VolunteerProfileDto>().ReverseMap();
         }
     }

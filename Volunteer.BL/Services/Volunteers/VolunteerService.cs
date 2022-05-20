@@ -29,6 +29,15 @@ namespace Volunteer.BL.Services.Volunteers
             _userRepository = userRepository;
         }
 
+        public async Task<VolunteerProfileDto> GetById(int volunteerId)
+        {
+            var entity = await _volunteerRepository.GetById(volunteerId);
+
+            var model = _mapper.Map<VolunteerProfileDto>(entity);
+
+            return model;
+        }
+
         public async Task<VolunteerProfileDto> CreateAsync(VolunteerAddDto dto ,User user)
         {
             Common.Models.Domain.Volunteer volunteer = new Common.Models.Domain.Volunteer();
@@ -47,6 +56,33 @@ namespace Volunteer.BL.Services.Volunteers
 
             user.Role = Common.Models.Domain.Enum.UserRoles.Volunteer;
             await _userRepository.UpdateAsync(user);
+
+            return profile;
+        }
+
+        public async Task<VolunteerProfileDto> UpdateAsync(VolunteerUpdateDto dto, User user)
+        {
+            var volunteer = await this.GetById(dto.VolunteerId);
+
+            var mapped = _mapper.Map<Common.Models.Domain.Volunteer>(dto);
+
+            mapped.BirthDate = dto.BirthDate ?? mapped.BirthDate;
+            mapped.Description = dto.Description ?? mapped.Description;
+            mapped.Region = dto.Region ?? mapped.Region;
+            mapped.Sex = dto.Sex ?? mapped.Sex;
+            mapped.Experience = dto.Experience ?? mapped.Experience;
+            mapped.VolunteeringCategories = dto.VolunteeringCategories;
+            mapped.UserId = mapped.UserId;
+            await _volunteerRepository.UpdateAsync(mapped);
+
+            user.Login = dto.Login ?? user.Login;
+            user.Email = dto.Email ?? user.Email;
+            user.Phone = dto.Phone ?? user.Phone;
+            //var profile = _mapper.Map<VolunteerProfileDto>(user);
+            await _userRepository.UpdateAsync(user);
+
+
+            var profile = _mapper.Map<VolunteerProfileDto>(mapped);
 
             return profile;
         }

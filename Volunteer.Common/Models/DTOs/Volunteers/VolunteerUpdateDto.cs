@@ -9,20 +9,16 @@ using Volunteer.Common.Models.Domain.Enum;
 
 namespace Volunteer.Common.Models.DTOs.Volunteers
 {
-    public class VolunteerAddDto
+    public class VolunteerUpdateDto
     {
         public int VolunteerId { get; set; }
-        [Required]
-        public DateTime BirthDate { get; set; }
-        [Required]
-        public bool Sex { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public bool? Sex { get; set; }
 
-        public Region Region { get; set; }
+        public Region? Region { get; set; }
 
-        [Required]
-        public VolunteeringCategories[] VolunteeringCategories { get; set; }
-        [Required]
-        public int Experience { get; set; }
+        public VolunteeringCategories[]? VolunteeringCategories { get; set; }
+        public int? Experience { get; set; }
 
         public string? Login { get; set; }
 
@@ -31,8 +27,9 @@ namespace Volunteer.Common.Models.DTOs.Volunteers
         [EmailAddress]
         public string? Email { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public int UserId { get; set; }
+
     }
 }
