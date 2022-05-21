@@ -1,0 +1,11 @@
+﻿using System.Threading.Tasks;
+using Volunteer.Common.Models.Domain;
+using Volunteer.Common.Models.DTOs.Organizations;
+
+namespace Volunteer.Common.Services.Organizations
+{
+    public interface IOrganizationService
+    {
+        public Task<OrganizationProfileDto> CreateAsync(OrganizationAddDto dto, User user);
+    }
+}

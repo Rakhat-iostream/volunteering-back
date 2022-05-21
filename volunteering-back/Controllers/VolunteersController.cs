@@ -72,11 +72,11 @@ namespace volunteering_back.Controllers
             {
                 var user = await _userService.GetSignedUser(cancellationToken);
                 var mapped = _mapper.Map<User>(user);
-                dto.UserId = user.Id;
-                dto.Login = user.Login;
-                dto.Phone = user.Phone;
-                dto.Email = user.Email;
+                //dto.UserId = user.Id;
                 var result = await _volunteerService.CreateAsync(dto, mapped);
+                result.Login = user.Login;
+                result.Phone = user.Phone;
+                result.Email = user.Email;
                 return Ok(result);
             }
             catch (Exception e)

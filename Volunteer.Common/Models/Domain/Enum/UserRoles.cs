@@ -11,8 +11,8 @@ namespace Volunteer.Common.Models.Domain.Enum
         [Description("Volunteer")]
         Volunteer,
 
-        [Description("OrganizationMember")]
-        OrganizationMember,
+        [Description("OrganizationAdmin")]
+        OrganizationAdmin,
 
         [Description("Administrator")]
         Administrator

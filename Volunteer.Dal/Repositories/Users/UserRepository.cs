@@ -64,7 +64,7 @@ namespace Volunteer.Dal.Repositories.Users
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 PasswordHash = _passwordHasher.Hash(dto.Password),
-                Role = dto.Role ?? 0,
+                Role = Common.Models.Domain.Enum.UserRoles.User,
             };
 
             //user.SetFullName(dto.FirstName, dto.LastName);

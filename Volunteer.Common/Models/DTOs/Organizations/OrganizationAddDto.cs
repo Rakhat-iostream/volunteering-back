@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.Domain.Enum;
 
-namespace Volunteer.Common.Models.Domain
+namespace Volunteer.Common.Models.DTOs.Organizations
 {
-    public class Organization
+    public class OrganizationAddDto
     {
-        [Key]
-        public int OrganizationId { get; set; }
         public string OrganizationName { get; set; }
         public string Location { get; set; }
         public Region? Region { get; set; }
@@ -20,12 +22,9 @@ namespace Volunteer.Common.Models.Domain
         public string? Description { get; set; }
         public int UserId { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public virtual User User { get; set; }
         [Phone]
         public string Phone { get; set; }
         [EmailAddress]
         public string Email { get; set; }
-
     }
 }

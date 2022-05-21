@@ -42,7 +42,7 @@ namespace Volunteer.BL.Services.Volunteers
         {
             Common.Models.Domain.Volunteer volunteer = new Common.Models.Domain.Volunteer();
             volunteer.VolunteerId = new int();
-            volunteer.UserId = dto.UserId;
+            volunteer.UserId = user.Id;
             volunteer.Region = dto.Region;
             volunteer.Sex = dto.Sex;
             volunteer.Experience = dto.Experience;
@@ -52,7 +52,7 @@ namespace Volunteer.BL.Services.Volunteers
 
             await _volunteerRepository.CreateAsync(volunteer);
 
-            var profile = _mapper.Map<VolunteerProfileDto>(user);
+            var profile = _mapper.Map<VolunteerProfileDto>(volunteer);
 
             user.Role = Common.Models.Domain.Enum.UserRoles.Volunteer;
             await _userRepository.UpdateAsync(user);

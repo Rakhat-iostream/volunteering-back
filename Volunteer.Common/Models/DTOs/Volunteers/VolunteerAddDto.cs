@@ -11,7 +11,6 @@ namespace Volunteer.Common.Models.DTOs.Volunteers
 {
     public class VolunteerAddDto
     {
-        public int VolunteerId { get; set; }
         [Required]
         public DateTime BirthDate { get; set; }
         [Required]
@@ -24,15 +23,8 @@ namespace Volunteer.Common.Models.DTOs.Volunteers
         [Required]
         public int Experience { get; set; }
 
-        public string? Login { get; set; }
-
-        [Phone]
-        public string? Phone { get; set; }
-        [EmailAddress]
-        public string? Email { get; set; }
-
         public string Description { get; set; }
 
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
     }
 }
