@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,13 +32,22 @@ namespace Volunteer.Dal.Repositories.Organizations
 
         public async Task<Organization> UpdateAsync(Organization organization)
         {
-            if (organization != null)
-            {
-                 _db.Organizations.Update(organization);
-                await _db.SaveChangesAsync();
-            }
+            var entity = await _db.Organizations.FirstOrDefaultAsync(x => x.OrganizationId == organization.OrganizationId);
 
-            return organization;
+            entity.Region = organization.Region ?? entity.Region;
+            entity.Location = organization.Location ?? entity.Location;
+            entity.Experience = organization.Experience ?? entity.Experience;
+            entity.OrganizationName = organization.OrganizationName ?? entity.OrganizationName;
+            entity.OrganizationTypes = organization.OrganizationTypes ?? entity.OrganizationTypes;
+            entity.OrganizedDate = organization.OrganizedDate ?? entity.OrganizedDate;
+            entity.VolunteeringCategories = organization.VolunteeringCategories ?? entity.VolunteeringCategories;
+            entity.Description = organization.Description ?? entity.Description;
+            entity.CEO = organization.CEO ?? entity.CEO;
+
+            var result = _db.Organizations.Update(entity);
+            await _db.SaveChangesAsync();
+
+            return result.Entity;
         }
     }
 }

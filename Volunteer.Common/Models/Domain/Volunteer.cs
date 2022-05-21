@@ -10,12 +10,12 @@ namespace Volunteer.Common.Models.Domain
         [Key]
         public int VolunteerId { get; set; }
 
-        public DateTime BirthDate { get; set; }
-        public bool Sex { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public bool? Sex { get; set; }
         public Region? Region { get; set; }
         public VolunteeringCategories[] VolunteeringCategories { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public int Experience { get; set; }
+        public int? Experience { get; set; }
         //public Membership[] Memberships { get; set; }
         public string? Description { get; set; }
 

@@ -7,5 +7,6 @@ namespace Volunteer.Common.Services.Organizations
     public interface IOrganizationService
     {
         public Task<OrganizationProfileDto> CreateAsync(OrganizationAddDto dto, User user);
+        public Task<OrganizationProfileDto> UpdateAsync(OrganizationUpdateDto dto, User user);
     }
 }

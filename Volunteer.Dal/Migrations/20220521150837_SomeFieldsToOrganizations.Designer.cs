@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volunteer.Dal.SqlContext;
@@ -9,9 +10,10 @@ using Volunteer.Dal.SqlContext;
 namespace Volunteer.Dal.Migrations
 {
     [DbContext(typeof(VolContext))]
-    partial class VolContextModelSnapshot : ModelSnapshot
+    [Migration("20220521150837_SomeFieldsToOrganizations")]
+    partial class SomeFieldsToOrganizations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace Volunteer.Dal.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<int?>("Experience")
+                    b.Property<int>("Experience")
                         .HasColumnType("integer");
 
                     b.Property<string>("Location")
@@ -171,7 +173,7 @@ namespace Volunteer.Dal.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2022, 5, 21, 16, 33, 42, 762, DateTimeKind.Utc).AddTicks(2208),
+                            CreatedAt = new DateTime(2022, 5, 21, 15, 8, 37, 452, DateTimeKind.Utc).AddTicks(5417),
                             Email = "admin@admin.com",
                             FirstName = "Admin",
                             LastName = "Admin",
@@ -190,7 +192,7 @@ namespace Volunteer.Dal.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
@@ -199,13 +201,13 @@ namespace Volunteer.Dal.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int?>("Experience")
+                    b.Property<int>("Experience")
                         .HasColumnType("integer");
 
                     b.Property<int?>("Region")
                         .HasColumnType("integer");
 
-                    b.Property<bool?>("Sex")
+                    b.Property<bool>("Sex")
                         .HasColumnType("boolean");
 
                     b.Property<int?>("UserId")

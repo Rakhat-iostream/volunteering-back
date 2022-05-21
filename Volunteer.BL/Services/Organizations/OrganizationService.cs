@@ -38,7 +38,7 @@ namespace Volunteer.BL.Services.Organizations
             organization.Location = dto.Location;
             organization.Description = dto.Description;
             organization.Region = dto.Region;
-            organization.UserId = dto.UserId;
+            organization.UserId = user.Id;
             organization.VolunteeringCategories = dto.VolunteeringCategories;
             organization.CEO = dto.CEO;
 
@@ -49,6 +49,21 @@ namespace Volunteer.BL.Services.Organizations
             user.Role = Common.Models.Domain.Enum.UserRoles.OrganizationAdmin;
             await _userRepository.UpdateAsync(user);
             
+            return profile;
+        }
+
+        public async Task<OrganizationProfileDto> UpdateAsync(OrganizationUpdateDto dto, User user)
+        {
+            var organization = _mapper.Map<OrganizationUpdateDto, Organization>(dto);
+
+            var result = await _organizationRepository.UpdateAsync(organization);
+
+            user.Login = dto.Login ?? user.Login;
+            user.Email = dto.Email ?? user.Email;
+            user.Phone = dto.Phone ?? user.Phone;
+            await _userRepository.UpdateAsync(user);
+
+            var profile = _mapper.Map<OrganizationProfileDto>(organization);
             return profile;
         }
     }

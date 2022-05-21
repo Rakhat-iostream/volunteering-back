@@ -176,7 +176,7 @@ namespace Volunteer.Controllers
 
         //SMS Registration
 
-        [HttpPost("register-user")]
+        /*[HttpPost("register-user")]
         [HttpPost("recover-password")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AuthenticateResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
@@ -197,7 +197,7 @@ namespace Volunteer.Controllers
 
                 return BadRequest(error.Value);
             }
-        }
+        }*/
 
         [HttpGet("is-exists")]
         public async Task<IActionResult> IsUserExists(string phone, CancellationToken cancellationToken)

@@ -62,28 +62,16 @@ namespace Volunteer.BL.Services.Volunteers
 
         public async Task<VolunteerProfileDto> UpdateAsync(VolunteerUpdateDto dto, User user)
         {
-            var volunteer = await this.GetById(dto.VolunteerId);
+            var volunteer = _mapper.Map<VolunteerUpdateDto, Common.Models.Domain.Volunteer>(dto);
 
-            var mapped = _mapper.Map<Common.Models.Domain.Volunteer>(dto);
-
-            mapped.BirthDate = dto.BirthDate ?? mapped.BirthDate;
-            mapped.Description = dto.Description ?? mapped.Description;
-            mapped.Region = dto.Region ?? mapped.Region;
-            mapped.Sex = dto.Sex ?? mapped.Sex;
-            mapped.Experience = dto.Experience ?? mapped.Experience;
-            mapped.VolunteeringCategories = dto.VolunteeringCategories;
-            mapped.UserId = mapped.UserId;
-            await _volunteerRepository.UpdateAsync(mapped);
+            var result = await _volunteerRepository.UpdateAsync(volunteer);
 
             user.Login = dto.Login ?? user.Login;
             user.Email = dto.Email ?? user.Email;
             user.Phone = dto.Phone ?? user.Phone;
-            //var profile = _mapper.Map<VolunteerProfileDto>(user);
             await _userRepository.UpdateAsync(user);
 
-
-            var profile = _mapper.Map<VolunteerProfileDto>(mapped);
-
+            var profile = _mapper.Map<VolunteerProfileDto>(volunteer);
             return profile;
         }
     }

@@ -20,11 +20,5 @@ namespace Volunteer.Common.Models.DTOs.Organizations
         public DateTime? OrganizedDate { get; set; }
         public int Experience { get; set; }
         public string? Description { get; set; }
-        public int UserId { get; set; }
-
-        [Phone]
-        public string Phone { get; set; }
-        [EmailAddress]
-        public string Email { get; set; }
     }
 }

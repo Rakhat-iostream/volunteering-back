@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Volunteer.Common.Repositories.Users;
 using Volunteer.Common.Repositories.Volunteers;
@@ -36,13 +37,19 @@ namespace Volunteer.Dal.Repositories.Volunteers
 
         public async Task<Common.Models.Domain.Volunteer> UpdateAsync(Common.Models.Domain.Volunteer volunteer)
         {
-            if (volunteer != null)
-            {
-                 _db.Volunteers.Update(volunteer);
-                await _db.SaveChangesAsync();
-            }
+            var entity = await _db.Volunteers.FirstOrDefaultAsync(x => x.VolunteerId == volunteer.VolunteerId);
 
-            return volunteer;
+            entity.BirthDate = volunteer.BirthDate ?? entity.BirthDate;
+            entity.Description = volunteer.Description ?? entity.Description;
+            entity.Region = volunteer.Region ?? entity.Region;
+            entity.Sex = volunteer.Sex ?? entity.Sex;
+            entity.Experience = volunteer.Experience ?? entity.Experience;
+            entity.VolunteeringCategories = volunteer.VolunteeringCategories ?? entity.VolunteeringCategories;
+
+            var result = _db.Volunteers.Update(entity);
+            await _db.SaveChangesAsync();
+
+            return result.Entity;
         }
     }
 }

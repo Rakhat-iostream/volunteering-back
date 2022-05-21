@@ -16,7 +16,7 @@ namespace Volunteer.Common.Models.Domain
         public OrganizationTypes[] OrganizationTypes { get; set; }
         public string? CEO { get; set; }
         public DateTime? OrganizedDate { get; set; }
-        public int Experience { get; set; }
+        public int? Experience { get; set; }
         public string? Description { get; set; }
         public int UserId { get; set; }
 

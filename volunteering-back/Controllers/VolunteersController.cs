@@ -72,7 +72,6 @@ namespace volunteering_back.Controllers
             {
                 var user = await _userService.GetSignedUser(cancellationToken);
                 var mapped = _mapper.Map<User>(user);
-                //dto.UserId = user.Id;
                 var result = await _volunteerService.CreateAsync(dto, mapped);
                 result.Login = user.Login;
                 result.Phone = user.Phone;
@@ -96,15 +95,17 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPost("volunteer/update")]
+        [HttpPut("volunteer/update")]
         public async Task<IActionResult> UpdateAsync(VolunteerUpdateDto dto, CancellationToken cancellationToken)
         {
             try
             {
                 var user = await _userService.GetSignedUser(cancellationToken);
                 var mapped = _mapper.Map<User>(user);
-                dto.UserId = user.Id;
                 var result = await _volunteerService.UpdateAsync(dto, mapped);
+                result.Login = user.Login;
+                result.Phone = user.Phone;
+                result.Email = user.Email;
                 return Ok(result);
             }
             catch (Exception e)
