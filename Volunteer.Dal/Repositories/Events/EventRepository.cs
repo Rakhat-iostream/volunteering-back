@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Volunteer.Common.Models;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Repositories.Events;
 using Volunteer.Dal.SqlContext;
@@ -18,9 +19,9 @@ namespace Volunteer.Dal.Repositories.Events
             _db = db;
         }
 
-        public IQueryable<Event> GetAll(int organizationId)
+        public ICollection<Event> GetAll(PageRequest request, int organizationId)
         {
-            var entity = _db.Events.Where(x => x.OrganizationId == organizationId);
+            var entity = _db.Events.Where(x => x.OrganizationId == organizationId).ToList();
             return entity;
         }
 

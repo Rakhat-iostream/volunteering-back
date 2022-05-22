@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 
 namespace Volunteer.Common.Repositories.Organizations
@@ -12,5 +13,6 @@ namespace Volunteer.Common.Repositories.Organizations
         public Task<Organization> GetByUserId(int userId);
         public Task<Organization> CreateAsync(Organization organization);
         public Task<Organization> UpdateAsync(Organization organization);
+        public ICollection<Organization> GetAll(FilterOrganizationRequest request);
     }
 }

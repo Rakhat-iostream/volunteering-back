@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Volunteer.Common.Models;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Organizations;
 using Volunteer.Common.Services.Organizations;
@@ -42,6 +44,31 @@ namespace volunteering_back.Controllers
                 var user = await _userService.GetSignedUser(cancellationToken);
                 //var mapped = _mapper.Map<User>(user);
                 var result = await _organizationService.GetByUserId(user.Id);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<OrganizationProfileDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAll([FromQuery] FilterOrganizationRequest request)
+        {
+            try
+            {
+                var result = await _organizationService.GetAll(request);
                 return Ok(result);
             }
             catch (Exception e)

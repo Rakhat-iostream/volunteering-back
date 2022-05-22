@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volunteer.Common.Extensions;
+using Volunteer.Common.Models;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Organizations;
 using Volunteer.Common.Repositories.Organizations;
@@ -31,6 +34,23 @@ namespace Volunteer.BL.Services.Organizations
         {
             var entity = await _organizationRepository.GetByUserId(userId);
             return entity;
+        }
+
+        public async Task<PageResponse<OrganizationProfileDto>> GetAll(FilterOrganizationRequest request)
+        {
+            var organizations = _organizationRepository.GetAll(request);
+
+            var total = organizations.Count();
+            var model = _mapper.Map<List<OrganizationProfileDto>>(organizations);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            return new PageResponse<OrganizationProfileDto>
+            {
+                Total = total,
+                Result = result
+                
+            };
         }
 
         public async Task<OrganizationProfileDto> CreateAsync(OrganizationAddDto dto, User user)

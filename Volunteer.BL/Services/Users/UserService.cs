@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Volunteer.Common.Crypto;
@@ -63,10 +65,21 @@ namespace Volunteer.BL.Services.Users
             return _mapper.Map<User, UserProfileDto>(result);
         }
 
-        public async Task<PageResponse<UserProfileDto>> GetAll(PageRequest pageRequest, CancellationToken cancellationToken)
+        public async Task<PageResponse<UserProfileDto>> GetAll(PageRequest request, CancellationToken cancellationToken)
         {
-            var users = await _mapper.ProjectTo<UserProfileDto>(_userRepository.GetAll()).ToPageAsync(pageRequest ?? PageRequest.Default(), cancellationToken);
-            return users;
+            var users = _userRepository.GetAll(request);
+
+            var total = users.Count();
+            var model = _mapper.Map<List<UserProfileDto>>(users);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            return new PageResponse<UserProfileDto>
+            {
+                Total = total,
+                Result = result
+
+            };
         }
 
         public async Task<UserProfileDto> GetSignedUser(CancellationToken cancellationToken)

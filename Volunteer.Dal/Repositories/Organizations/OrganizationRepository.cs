@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Repositories.Organizations;
 using Volunteer.Dal.SqlContext;
@@ -23,6 +24,18 @@ namespace Volunteer.Dal.Repositories.Organizations
         {
             var organization = await _db.Organizations.FirstOrDefaultAsync(x => x.UserId == userId);
             return organization;
+        }
+
+        public ICollection<Organization> GetAll(FilterOrganizationRequest request)
+        {
+            var entity = _db.Organizations.ToList();
+
+            if (request.Region.HasValue)
+            {
+                entity = entity.Where(x => x.Region == request.Region).ToList();
+            }
+
+            return entity;
         }
 
         public async Task<Organization> CreateAsync(Organization organization)

@@ -8,7 +8,7 @@ namespace Volunteer.Common.Extensions
 {
     public static class PaginationExtensions
     {
-        public static async Task<PageResponse<T>> ToPageAsync<T>(
+       /* public static async Task<PageResponse<T>> ToPageAsync<T>(
             this IQueryable<T> query,
             PageRequest pageRequest,
             CancellationToken cancellationToken = default)
@@ -21,6 +21,6 @@ namespace Volunteer.Common.Extensions
                 .ToListAsync(cancellationToken);
 
             return new PageResponse<T>(total, items);
-        }
+        }*/
     }
 }

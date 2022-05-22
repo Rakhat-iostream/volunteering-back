@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Volunteer.Common.Models;
 using Volunteer.Common.Models.Domain;
 
 namespace Volunteer.Common.Repositories.Events
@@ -7,7 +9,7 @@ namespace Volunteer.Common.Repositories.Events
     public interface IEventRepository
     {
         public Task<Event> GetAsync(int eventId);
-        public IQueryable<Event> GetAll(int organizationId);
+        public ICollection<Event> GetAll(PageRequest request, int organizationId);
         public Task<Event> CreateAsync(Event events);
         public Task<Event> UpdateAsync(Event events);
         public void CompleteEvent(int eventId);

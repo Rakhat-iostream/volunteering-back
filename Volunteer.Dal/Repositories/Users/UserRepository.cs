@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Volunteer.Common.Crypto;
+using Volunteer.Common.Models;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Auth;
 using Volunteer.Common.Repositories.Users;
@@ -32,9 +33,10 @@ namespace Volunteer.Dal.Repositories.Users
             return entity.Entity;
         }
 
-        public IQueryable<User> GetAll()
+        public ICollection<User> GetAll(PageRequest request)
         {
-            var user = _db.Users.AsNoTracking();
+            var user = _db.Users.AsNoTracking().ToList();
+
             return user;
         }
 

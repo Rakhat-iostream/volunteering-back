@@ -4,13 +4,7 @@ namespace Volunteer.Common.Models
 {
     public class PageResponse<T>
     {
-        public PageResponse(int total, List<T> result)
-        {
-            Total = total;
-            Result = result;
-        }
-
-        public int Total { get; }
-        public List<T> Result { get; }
+        public int Total { get; set; }
+        public IEnumerable<T> Result { get; set; }
     }
 }
