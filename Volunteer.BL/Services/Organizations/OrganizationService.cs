@@ -27,6 +27,12 @@ namespace Volunteer.BL.Services.Organizations
             _mapper = mapper;
         }
 
+        public async Task<Organization> GetByUserId(int userId)
+        {
+            var entity = await _organizationRepository.GetByUserId(userId);
+            return entity;
+        }
+
         public async Task<OrganizationProfileDto> CreateAsync(OrganizationAddDto dto, User user)
         {
             Organization organization = new Organization();

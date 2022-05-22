@@ -19,6 +19,12 @@ namespace Volunteer.Dal.Repositories.Organizations
             _db = db;
         }
 
+        public async Task<Organization> GetByUserId(int userId)
+        {
+            var organization = await _db.Organizations.FirstOrDefaultAsync(x => x.UserId == userId);
+            return organization;
+        }
+
         public async Task<Organization> CreateAsync(Organization organization)
         {
             if (organization != null)

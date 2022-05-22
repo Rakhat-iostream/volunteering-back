@@ -3,172 +3,60 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Volunteer.Common.Models;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Events;
-using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Services.Events;
+using Volunteer.Common.Services.Organizations;
 using Volunteer.Common.Services.Users;
-using Volunteer.Common.Services.Volunteers;
 
 namespace volunteering_back.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VolunteersController : ControllerBase
+    public class EventsController : ControllerBase
     {
-        private readonly IVolunteerService _volunteerService;
-        private readonly IUserService _userService;
         private readonly IEventService _eventService;
+        private readonly IOrganizationService _organizationService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public VolunteersController(IVolunteerService volunteerService,
-            IUserService userService,
-            IEventService eventService,
+        public EventsController(IEventService eventService, 
+            IOrganizationService organizationService, 
+            IUserService userService, 
             IMapper mapper)
         {
-            _volunteerService = volunteerService;
-            _userService = userService;
             _eventService = eventService;
+            _organizationService = organizationService;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VolunteerProfileDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpGet("volunteer/userId")]
-        public async Task<IActionResult> GetByUserId(CancellationToken cancellationToken)
-        {
-            try
-            {
-                var user = await _userService.GetSignedUser(cancellationToken);
-                //var mapped = _mapper.Map<User>(user);
-                var result = await _volunteerService.GetByUserId(user.Id);
-                var profile = _mapper.Map<VolunteerProfileDto>(result);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                var error = new JsonResult(new
-                {
-                    statusCode = 400,
-                    message = e.Message,
-                });
-
-                return BadRequest(error.Value);
-            }
-        }
-
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VolunteerProfileDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpGet("volunteer/id")]
-        public async Task<IActionResult> GetById(int volunteerId, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var user = await _userService.GetSignedUser(cancellationToken);
-                var result = await _volunteerService.GetById(volunteerId);
-                result.Login = user.Login;
-                result.Phone = user.Phone;
-                result.Email = user.Email;
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                var error = new JsonResult(new
-                {
-                    statusCode = 400,
-                    message = e.Message,
-                });
-
-                return BadRequest(error.Value);
-            }
-        }
-
-
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VolunteerProfileDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPost("volunteer-register")]
-        public async Task<IActionResult> RegisterAsync(VolunteerAddDto dto, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var user = await _userService.GetSignedUser(cancellationToken);
-                var mapped = _mapper.Map<User>(user);
-                var result = await _volunteerService.CreateAsync(dto, mapped);
-                result.Login = user.Login;
-                result.Phone = user.Phone;
-                result.Email = user.Email;
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                var error = new JsonResult(new
-                {
-                    statusCode = 400,
-                    message = e.Message,
-                });
-
-                return BadRequest(error.Value);
-            }
-        }
-
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VolunteerProfileDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("volunteer/update")]
-        public async Task<IActionResult> UpdateAsync(VolunteerUpdateDto dto, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var user = await _userService.GetSignedUser(cancellationToken);
-                var mapped = _mapper.Map<User>(user);
-                var result = await _volunteerService.UpdateAsync(dto, mapped);
-                result.Login = user.Login;
-                result.Phone = user.Phone;
-                result.Email = user.Email;
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                var error = new JsonResult(new
-                {
-                    statusCode = 400,
-                    message = e.Message,
-                });
-
-                return BadRequest(error.Value);
-            }
-        }
-
-        [Authorize(Roles = "Volunteer")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventViewDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("volunteer/joinToEvent")]
-        public async Task<IActionResult> JoinToEvent(int eventId, CancellationToken cancellationToken)
+        [HttpGet]
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var user = await _userService.GetSignedUser(cancellationToken);
-                var mapped = _mapper.Map<User>(user);
+                var result = await _eventService.GetAsync(id);
 
-                var vol = await _volunteerService.GetByUserId(user.Id);
+                if (result is null)
+                {
+                    var error = new JsonResult(new
+                    {
+                        statusCode = 400,
+                        message = "Event not found",
+                    });
 
-                var result = await _eventService.JoinToEvent(eventId, vol);
+                    return BadRequest(error);
+                }
+
                 return Ok(result);
             }
             catch (Exception e)
@@ -183,22 +71,48 @@ namespace volunteering_back.Controllers
             }
         }
 
-        [Authorize(Roles = "Volunteer")]
+        [Authorize(Roles = "OrganizationAdmin, Volunteer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<EventViewDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest,CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _userService.GetSignedUser(cancellationToken);
+                var mapped = _mapper.Map<User>(user);
+                var organization = await _organizationService.GetByUserId(mapped.Id);
+                var result = await _eventService.GetAll(pageRequest, organization.OrganizationId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "OrganizationAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventViewDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("volunteer/leaveFromEvent")]
-        public async Task<IActionResult> LeaveFromEvent(int eventId, CancellationToken cancellationToken)
+        [HttpPost("event/create")]
+        public async Task<IActionResult> CreateAsync(EventAddDto dto, CancellationToken cancellationToken)
         {
             try
             {
                 var user = await _userService.GetSignedUser(cancellationToken);
                 var mapped = _mapper.Map<User>(user);
-
-                var vol = await _volunteerService.GetByUserId(user.Id);
-
-                var result = await _eventService.LeaveFromEvent(eventId, vol);
+                var organization = await _organizationService.GetByUserId(mapped.Id);
+                var result = await _eventService.CreateAsync(dto, organization);
                 return Ok(result);
             }
             catch (Exception e)
@@ -213,30 +127,79 @@ namespace volunteering_back.Controllers
             }
         }
 
-        protected int? GetCurrentUserProfileId()
+        [Authorize(Roles = "OrganizationAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventViewDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("event/update")]
+        public async Task<IActionResult> UpdateAsync(EventUpdateDto dto)
         {
-            var user = HttpContext.User;
             try
             {
-                if (user == null)
-                {
-                    return (null);
-                }
-
-                var raw = user.FindFirstValue("id");
-                if (Int32.TryParse(raw, out var user_id))
-                {
-                    return (user_id);
-                }
+                var result = await _eventService.UpdateAsync(dto);
+                return Ok(result);
             }
-            catch (Exception exc)
+            catch (Exception e)
             {
-                throw new Exception("nope");
-            }
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
 
-            return (null);
+                return BadRequest(error.Value);
+            }
         }
 
+        [Authorize(Roles = "OrganizationAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("event/complete")]
+        public async Task<IActionResult> CompleteEvent(int eventId)
+        {
+            try
+            {
+                _eventService.CompleteEvent(eventId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
 
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int eventId)
+        {
+            try
+            {
+                await _eventService.DeleteAsync(eventId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
     }
 }

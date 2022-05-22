@@ -29,6 +29,12 @@ namespace Volunteer.BL.Services.Volunteers
             _userRepository = userRepository;
         }
 
+        public async Task<Common.Models.Domain.Volunteer> GetByUserId(int userId)
+        {
+            var entity = await _volunteerRepository.GetByUserId(userId);
+            return entity;
+        }
+
         public async Task<VolunteerProfileDto> GetById(int volunteerId)
         {
             var entity = await _volunteerRepository.GetById(volunteerId);

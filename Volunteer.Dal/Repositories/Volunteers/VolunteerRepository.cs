@@ -24,6 +24,12 @@ namespace Volunteer.Dal.Repositories.Volunteers
             return volunteer;
         }
 
+        public async Task<Common.Models.Domain.Volunteer> GetByUserId(int userId)
+        {
+            var organization = await _db.Volunteers.FirstOrDefaultAsync(x => x.UserId == userId);
+            return organization;
+        }
+
         public async Task<Common.Models.Domain.Volunteer> CreateAsync(Common.Models.Domain.Volunteer volunteer)
         {
             if (volunteer != null)

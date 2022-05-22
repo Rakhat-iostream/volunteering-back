@@ -9,6 +9,7 @@ namespace Volunteer.Common.Repositories.Organizations
 {
     public interface IOrganizationRepository
     {
+        public Task<Organization> GetByUserId(int userId);
         public Task<Organization> CreateAsync(Organization organization);
         public Task<Organization> UpdateAsync(Organization organization);
     }

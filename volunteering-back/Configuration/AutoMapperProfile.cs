@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Volunteer.Common.Models.Domain;
+using Volunteer.Common.Models.DTOs.Events;
 using Volunteer.Common.Models.DTOs.Organizations;
 using Volunteer.Common.Models.DTOs.User;
 using Volunteer.Common.Models.DTOs.Volunteers;
@@ -28,6 +29,10 @@ namespace Volunteer.Configuration
             CreateMap<Organization, OrganizationProfileDto>().ReverseMap();
             CreateMap<Organization, OrganizationAddDto>().ReverseMap();
             CreateMap<Organization, OrganizationUpdateDto>().ReverseMap();
+
+            CreateMap<Event, EventAddDto>().ReverseMap();
+            CreateMap<Event, EventViewDto>().ReverseMap();
+            CreateMap<Event, EventUpdateDto>().ReverseMap();
         }
     }
 }

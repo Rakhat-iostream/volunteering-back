@@ -30,6 +30,7 @@ namespace Volunteer.Dal.SqlContext
         public DbSet<SmsCode> SmsCodes { get; set; }
         public DbSet<Common.Models.Domain.Volunteer> Volunteers { get; set; }
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Event> Events { get; set; }
         //public DbSet<Membership> Memberships { get; set; }
 
     }
