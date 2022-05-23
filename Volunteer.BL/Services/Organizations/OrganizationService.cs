@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Volunteer.Common.Extensions;
 using Volunteer.Common.Models;
 using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
@@ -28,6 +25,12 @@ namespace Volunteer.BL.Services.Organizations
             _organizationRepository = organizationRepository;
             _userRepository = userRepository;
             _mapper = mapper;
+        }
+
+        public async Task<OrganizationProfileDto> GetAsync(int organizationId)
+        {
+            var organizations = await _organizationRepository.GetAsync(organizationId);
+            return _mapper.Map<Organization, OrganizationProfileDto>(organizations);
         }
 
         public async Task<Organization> GetByUserId(int userId)

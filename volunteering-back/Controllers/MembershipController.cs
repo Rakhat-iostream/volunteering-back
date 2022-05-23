@@ -5,8 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Volunteer.Common.Models;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.Domain.ViewModels;
+using Volunteer.Common.Models.DTOs.Memberships;
+using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Services.Memberships;
 using Volunteer.Common.Services.Organizations;
 using Volunteer.Common.Services.Users;
@@ -37,13 +41,13 @@ namespace volunteering_back.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Volunteer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPost("request-membership")]
-        public async Task<IActionResult> CreateAsync([FromBody] MembershipViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAsync([FromBody] MembershipAddDto model, CancellationToken cancellationToken)
         {
             try
             {
@@ -67,7 +71,62 @@ namespace volunteering_back.Controllers
             }
         }
 
+        [Authorize(Roles = "OrganizationAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MembershipViewModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("changeRequest")]
+        public async Task<IActionResult> ChangeRequest([FromQuery] MembershipClientRequest clientRequest, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var model = await _membershipService.ChangeMembershipStatus(clientRequest);
 
+                var result = _mapper.Map<MembershipViewModel>(model);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<VolunteerProfileDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("candidates")]
+        public async Task<IActionResult> GetAll([FromQuery] PageRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _userService.GetSignedUser(cancellationToken);
+
+                var organization = await _organizationService.GetByUserId(user.Id);
+
+                var result = await _membershipService.GetCandidates(request, organization.OrganizationId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
 
     }
 }

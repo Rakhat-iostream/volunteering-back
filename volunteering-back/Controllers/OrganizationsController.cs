@@ -31,6 +31,42 @@ namespace volunteering_back.Controllers
             _mapper = mapper;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganizationProfileDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet]
+        public async Task<IActionResult> Get(int id)
+        {
+            try
+            {
+                var result = await _organizationService.GetAsync(id);
+
+                if (result is null)
+                {
+                    var error = new JsonResult(new
+                    {
+                        statusCode = 400,
+                        message = "Event not found",
+                    });
+
+                    return BadRequest(error);
+                }
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Organization))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
@@ -58,30 +94,30 @@ namespace volunteering_back.Controllers
             }
         }
 
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<OrganizationProfileDto>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpGet("list")]
-        public async Task<IActionResult> GetAll([FromQuery] FilterOrganizationRequest request)
-        {
-            try
+            [Authorize]
+            [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<OrganizationProfileDto>))]
+            [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+            [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+            [ProducesResponseType(StatusCodes.Status403Forbidden)]
+            [HttpGet("list")]
+            public async Task<IActionResult> GetAll([FromQuery] FilterOrganizationRequest request)
             {
-                var result = await _organizationService.GetAll(request);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                var error = new JsonResult(new
+                try
                 {
-                    statusCode = 400,
-                    message = e.Message,
-                });
+                    var result = await _organizationService.GetAll(request);
+                    return Ok(result);
+                }
+                catch (Exception e)
+                {
+                    var error = new JsonResult(new
+                    {
+                        statusCode = 400,
+                        message = e.Message,
+                    });
 
-                return BadRequest(error.Value);
+                    return BadRequest(error.Value);
+                }
             }
-        }
 
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganizationProfileDto))]

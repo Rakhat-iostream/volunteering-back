@@ -8,5 +8,6 @@ namespace Volunteer.Common.Models.DTOs.Memberships
 {
     public class MembershipAddDto
     {
+        public int OrganizationId { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Volunteer.Common.Models.Domain
         [Key]
         public int MembershipId { get; set; }
 
-        public List<int>? VolunteerIds { get; set; }
+        public int? VolunteerId { get; set; }
         public MembershipStatus MembershipStatus { get; set; }
 
         public int? OrganizationId { get; set; }

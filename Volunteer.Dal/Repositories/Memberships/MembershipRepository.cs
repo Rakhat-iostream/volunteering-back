@@ -24,36 +24,30 @@ namespace Volunteer.Dal.Repositories.Memberships
 
         public async Task<Membership> AddMembership(Membership model, int volunteerId)
         {
+            //var exists = _db.Memberships.FirstOrDefault(x => x.OrganizationId == model.OrganizationId);
+
             var membership = _mapper.Map<Membership>(model);
 
-            membership.MembershipId = new int();
-
-            if (membership.VolunteerIds == null)
+            /*if (exists != null)
             {
-                membership.VolunteerIds = new List<int> { };
-                membership.VolunteerIds.Add(volunteerId);
-                await _db.SaveChangesAsync();
-            }
-
-            else if (!membership.VolunteerIds.Contains(volunteerId))
-            {
-                membership.VolunteerIds.Add(volunteerId);
+                exists.VolunteerIds.Add(volunteerId);
+                 _db.Update(exists);
                 await _db.SaveChangesAsync();
             }
             else
-            {
-                throw new Exception("You have already joined to this event");
-            }
-
+            {*/
+            membership.MembershipId = new int();
             membership.OrganizationId = model.OrganizationId;
+            membership.VolunteerId = volunteerId;
             membership.MembershipStatus = Common.Models.Domain.Enum.MembershipStatus.NeedOrganizationApprove;
             await _db.Memberships.AddAsync(membership);
             await _db.SaveChangesAsync();
+            //}
 
             return membership;
         }
 
-        public Membership ChangeRequest(MembershipClientRequest clientRequest)
+        public async Task<Membership> ChangeRequest(MembershipClientRequest clientRequest)
         {
             var request = _db.Memberships.FirstOrDefault(x => x.MembershipId.Equals(clientRequest.MembershipId));
 
@@ -73,14 +67,15 @@ namespace Volunteer.Dal.Repositories.Memberships
             }
 
             _db.Memberships.Update(request);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
 
             return request;
         }
 
         private Common.Models.Domain.Volunteer AddMembershipIdToVolunteer(Membership membership)
         {
-            var entity = _db.Volunteers.FirstOrDefault(x => membership.VolunteerIds.Contains(x.VolunteerId));
+            //var entity = _db.Volunteers.FirstOrDefault(x => membership.VolunteerIds.Contains(x.VolunteerId));
+            var entity = _db.Volunteers.FirstOrDefault(x => x.VolunteerId == membership.VolunteerId);
 
             entity.MembershipId = membership.MembershipId;
 
@@ -88,6 +83,24 @@ namespace Volunteer.Dal.Repositories.Memberships
             _db.SaveChanges();
 
             return entity;
+        }
+
+        public ICollection<Common.Models.Domain.Volunteer> GetCandidates(int organizationId)
+        {
+            var memberships = _db.Memberships.Where(x => x.OrganizationId == organizationId 
+            && x.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.NeedOrganizationApprove).ToList();
+
+            //var ids = membership.VolunteerIds;
+            //var id = ids.FirstOrDefault();
+            //var volunteer = _db.Volunteers.Where(x => ids.Contains(id)).ToList();
+            List <Common.Models.Domain.Volunteer > volunteers = new List<Common.Models.Domain.Volunteer>();
+
+            foreach (var membership in memberships)
+            {
+                var volunteer = _db.Volunteers.Where(x => x.VolunteerId == membership.VolunteerId).ToList();
+                volunteers = volunteer;
+            }
+            return volunteers;
         }
     }
 }

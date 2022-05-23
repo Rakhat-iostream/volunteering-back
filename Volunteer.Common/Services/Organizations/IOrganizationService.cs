@@ -8,6 +8,7 @@ namespace Volunteer.Common.Services.Organizations
 {
     public interface IOrganizationService
     {
+        public Task<OrganizationProfileDto> GetAsync(int organizationId);
         public Task<Organization> GetByUserId(int userId);
         public Task<PageResponse<OrganizationProfileDto>> GetAll(FilterOrganizationRequest request);
         public Task<OrganizationProfileDto> CreateAsync(OrganizationAddDto dto, User user);
