@@ -11,6 +11,7 @@ namespace Volunteer.Common.Models.DTOs.Volunteers
 {
     public class VolunteerProfileDto
     {
+        public int VolunteerId { get; set; }
         public DateTime BirthDate { get; set; }
         public bool Sex { get; set; }
 
