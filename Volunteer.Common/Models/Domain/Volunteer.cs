@@ -22,5 +22,9 @@ namespace Volunteer.Common.Models.Domain
         public int? UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
+
+        public int? MembershipId { get; set; }
+        [ForeignKey(nameof(MembershipId))]
+        public virtual Membership Membership { get; set; }
     }
 }

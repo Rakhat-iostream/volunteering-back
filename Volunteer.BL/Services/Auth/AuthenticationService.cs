@@ -48,7 +48,7 @@ namespace Volunteer.BL.Services.Auth
             _mapper = mapper;
         }
 
-        public async Task<bool> VerifySmsCode(string phone, string code, CancellationToken cancellationToken)
+        /*public async Task<bool> VerifySmsCode(string phone, string code, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetAsyncByPhone(phone, cancellationToken);
 
@@ -64,10 +64,10 @@ namespace Volunteer.BL.Services.Auth
             }
 
             return isVerified;
+        
+        }*/
 
-        }
-
-        public async Task<string> RequestSmsCode(string phone, CancellationToken cancellationToken)
+        /*public async Task<string> RequestSmsCode(string phone, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetAsyncByPhone(phone, cancellationToken);
 
@@ -90,7 +90,7 @@ namespace Volunteer.BL.Services.Auth
             // What if code didn`t send?
 
             return code;
-        }
+        }*/
 
         public async Task<AuthenticateResponse> GetTokenByLogin(string login, string password, CancellationToken cancellationToken)
         {

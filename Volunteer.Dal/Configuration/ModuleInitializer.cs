@@ -3,11 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Volunteer.Common.Repositories.Auth;
 using Volunteer.Common.Repositories.Events;
+using Volunteer.Common.Repositories.Memberships;
 using Volunteer.Common.Repositories.Organizations;
 using Volunteer.Common.Repositories.Users;
 using Volunteer.Common.Repositories.Volunteers;
 using Volunteer.Dal.Repositories;
 using Volunteer.Dal.Repositories.Events;
+using Volunteer.Dal.Repositories.Memberships;
 using Volunteer.Dal.Repositories.Organizations;
 using Volunteer.Dal.Repositories.Users;
 using Volunteer.Dal.Repositories.Volunteers;
@@ -43,6 +45,7 @@ namespace Volunteer.Dal.Configuration
             services.AddTransient<IVolunteerRepository, VolunteerRepository>();
             services.AddTransient<IOrganizationRepository, OrganizationRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
+            services.AddTransient<IMembershipRepository, MembershipRepository>();
 
         }
     }

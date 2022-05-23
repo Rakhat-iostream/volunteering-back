@@ -33,9 +33,26 @@ namespace Volunteer.BL.Services.Events
             return _mapper.Map<Event, EventViewDto>(events);
         }
 
-        public async Task<PageResponse<EventViewDto>> GetAll(PageRequest request, int organizationId)
+        public async Task<PageResponse<EventViewDto>> GetAll(PageRequest request)
         {
-            var events = _eventRepository.GetAll(request, organizationId);
+            var organizations = _eventRepository.GetAll(request);
+
+            var total = organizations.Count();
+            var model = _mapper.Map<List<EventViewDto>>(organizations);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            return new PageResponse<EventViewDto>
+            {
+                Total = total,
+                Result = result
+
+            };
+        }
+
+        public async Task<PageResponse<EventViewDto>> GetAllForOrganization(PageRequest request, int organizationId)
+        {
+            var events = _eventRepository.GetAllForOrganization(request, organizationId);
 
             var total = events.Count();
             var model = _mapper.Map<List<EventViewDto>>(events);

@@ -9,7 +9,8 @@ namespace Volunteer.Common.Repositories.Events
     public interface IEventRepository
     {
         public Task<Event> GetAsync(int eventId);
-        public ICollection<Event> GetAll(PageRequest request, int organizationId);
+        public ICollection<Event> GetAll(PageRequest request);
+        public ICollection<Event> GetAllForOrganization(PageRequest request, int organizationId);
         public Task<Event> CreateAsync(Event events);
         public Task<Event> UpdateAsync(Event events);
         public void CompleteEvent(int eventId);

@@ -13,7 +13,7 @@ namespace Volunteer.Dal.SqlContext.Configuration
             builder.HasIndex(u => u.Phone).IsUnique();
             builder.HasIndex(u => u.Email).IsUnique();
 
-            builder.HasData(
+            /*builder.HasData(
                 new User
                 {
                     Id = 1,
@@ -25,7 +25,7 @@ namespace Volunteer.Dal.SqlContext.Configuration
                     Status = UserStatus.Active,
                     FirstName = "Admin",
                     LastName = "Admin"
-                });
+                });*/
         }
     }
 }

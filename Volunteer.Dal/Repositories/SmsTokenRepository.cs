@@ -20,7 +20,7 @@ namespace Volunteer.Dal.Repositories
             _db = db;
         }
 
-        public async Task AddAsync(SmsCode code, CancellationToken cancellationToken = default)
+        /*public async Task AddAsync(SmsCode code, CancellationToken cancellationToken = default)
         {
             await _db.SmsCodes.AddAsync(code, cancellationToken);
             await _db.SaveChangesAsync(cancellationToken);
@@ -36,6 +36,6 @@ namespace Volunteer.Dal.Repositories
         {
             var smsCodes = _db.SmsCodes.AsNoTracking();
             return smsCodes;
-        }
+        }*/
     }
 }

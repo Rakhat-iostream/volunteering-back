@@ -18,5 +18,6 @@ namespace Volunteer.Common.Models.DTOs.Events
         public VolunteeringCategories VolunteeringCategory { get; set; }
         public bool IsFinished { get; set; }
         public int? OrganizationId { get; set; }
+        public List<int>? VolunteerIds { get; set; }
     }
 }

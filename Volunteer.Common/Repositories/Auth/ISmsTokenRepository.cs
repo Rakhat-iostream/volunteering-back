@@ -10,8 +10,8 @@ namespace Volunteer.Common.Repositories.Auth
 {
     public interface ISmsTokenRepository
     {
-        public Task AddAsync(SmsCode code, CancellationToken cancellationToken = default);
+        /*public Task AddAsync(SmsCode code, CancellationToken cancellationToken = default);
         public Task DeleteRangeAsync(IEnumerable<SmsCode> codes, CancellationToken cancellationToken = default);
-        public IEnumerable<SmsCode> GetAll();
+        public IEnumerable<SmsCode> GetAll();*/
     }
 }

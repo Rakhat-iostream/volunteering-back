@@ -6,7 +6,7 @@ namespace Volunteer.Common.Services.Auth.Token
 {
     public interface ISmsTokenService
     {
-        public Task<string> Generate(User user, CancellationToken cancellationToken);
-        public Task<bool> Verify(User user, string token, CancellationToken cancellationToken);
+        /*public Task<string> Generate(User user, CancellationToken cancellationToken);
+        public Task<bool> Verify(User user, string token, CancellationToken cancellationToken);*/
     }
 }

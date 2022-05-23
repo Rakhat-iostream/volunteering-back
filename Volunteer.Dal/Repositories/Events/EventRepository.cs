@@ -19,7 +19,13 @@ namespace Volunteer.Dal.Repositories.Events
             _db = db;
         }
 
-        public ICollection<Event> GetAll(PageRequest request, int organizationId)
+        public ICollection<Event> GetAll(PageRequest request)
+        {
+            var entity = _db.Events.ToList();
+            return entity;
+        }
+
+        public ICollection<Event> GetAllForOrganization(PageRequest request, int organizationId)
         {
             var entity = _db.Events.Where(x => x.OrganizationId == organizationId).ToList();
             return entity;

@@ -10,6 +10,7 @@ namespace Volunteer.Common.Models.DTOs.Organizations
 {
     public class OrganizationProfileDto
     {
+        public int OrganizationId { get; set; }
         public string OrganizationName { get; set; }
         public string Location { get; set; }
 

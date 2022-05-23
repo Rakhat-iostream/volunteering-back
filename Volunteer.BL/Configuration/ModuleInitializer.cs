@@ -3,12 +3,14 @@ using Volunteer.BL.Services.Auth;
 using Volunteer.BL.Services.Auth.Jwt;
 using Volunteer.BL.Services.Auth.Sms;
 using Volunteer.BL.Services.Events;
+using Volunteer.BL.Services.Memberships;
 using Volunteer.BL.Services.Organizations;
 using Volunteer.BL.Services.Users;
 using Volunteer.BL.Services.Volunteers;
 using Volunteer.Common.Services.Auth;
 using Volunteer.Common.Services.Auth.Token;
 using Volunteer.Common.Services.Events;
+using Volunteer.Common.Services.Memberships;
 using Volunteer.Common.Services.Organizations;
 using Volunteer.Common.Services.Users;
 using Volunteer.Common.Services.Volunteers;
@@ -30,6 +32,7 @@ namespace Volunteer.BL.Configuration
             services.AddScoped<IVolunteerService, VolunteerService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IMembershipService, MembershipService>();
 
 
             return services;

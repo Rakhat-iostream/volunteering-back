@@ -22,7 +22,7 @@ namespace Volunteer.BL.Services.Auth.Sms
             _smsTokenRepository = smsTokenRepository;
         }
 
-        public async Task<bool> Verify(User user, string token, CancellationToken cancellationToken)
+        /*public async Task<bool> Verify(User user, string token, CancellationToken cancellationToken)
         {
             var userCodes = _smsTokenRepository.GetAll().OrderByDescending(x => x.CreatedAt).Where(x => x.UserId == user.Id);
 
@@ -46,6 +46,6 @@ namespace Volunteer.BL.Services.Auth.Sms
             await _smsTokenRepository.AddAsync(smsCode, cancellationToken);
 
             return code;
-        }
+        }*/
     }
 }

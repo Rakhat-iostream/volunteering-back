@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volunteer.Dal.SqlContext;
@@ -10,9 +11,10 @@ using Volunteer.Dal.SqlContext;
 namespace Volunteer.Dal.Migrations
 {
     [DbContext(typeof(VolContext))]
-    partial class VolContextModelSnapshot : ModelSnapshot
+    [Migration("20220523142731_Membership")]
+    partial class Membership
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,6 +160,30 @@ namespace Volunteer.Dal.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
+            modelBuilder.Entity("Volunteer.Common.Models.Domain.SmsCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SmsCodes");
+                });
+
             modelBuilder.Entity("Volunteer.Common.Models.Domain.User", b =>
                 {
                     b.Property<int>("Id")
@@ -276,6 +302,15 @@ namespace Volunteer.Dal.Migrations
                 });
 
             modelBuilder.Entity("Volunteer.Common.Models.Domain.RefreshToken", b =>
+                {
+                    b.HasOne("Volunteer.Common.Models.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Volunteer.Common.Models.Domain.SmsCode", b =>
                 {
                     b.HasOne("Volunteer.Common.Models.Domain.User", "User")
                         .WithMany()

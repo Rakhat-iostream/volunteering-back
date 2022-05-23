@@ -71,20 +71,45 @@ namespace volunteering_back.Controllers
             }
         }
 
-        [Authorize(Roles = "OrganizationAdmin, Volunteer")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<EventViewDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpGet("list")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest,CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _eventService.GetAll(pageRequest);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "OrganizationAdmin, Volunteer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<EventViewDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("list/organization")]
+        public async Task<IActionResult> GetAllForOrganization([FromQuery] PageRequest pageRequest,CancellationToken cancellationToken)
         {
             try
             {
                 var user = await _userService.GetSignedUser(cancellationToken);
                 var mapped = _mapper.Map<User>(user);
                 var organization = await _organizationService.GetByUserId(mapped.Id);
-                var result = await _eventService.GetAll(pageRequest, organization.OrganizationId);
+                var result = await _eventService.GetAllForOrganization(pageRequest, organization.OrganizationId);
                 return Ok(result);
             }
             catch (Exception e)
