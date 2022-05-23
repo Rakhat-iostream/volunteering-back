@@ -15,7 +15,8 @@ namespace Volunteer.Common.Repositories.Events
         public Task<Event> UpdateAsync(Event events);
         public void CompleteEvent(int eventId);
         public Task DeleteAsync(int eventId);
-        public Task<Event> JoinToEvent(int eventId, Common.Models.Domain.Volunteer volunteer);
-        public Task<Event> LeaveFromEvent(int eventId, Common.Models.Domain.Volunteer volunteer);
+        public Task<Event> JoinToEvent(int eventId, Models.Domain.Volunteer volunteer);
+        public Task<Event> LeaveFromEvent(int eventId, Models.Domain.Volunteer volunteer);
+        public ICollection<Models.Domain.Volunteer> GetEventMembers(int eventId);
     }
 }

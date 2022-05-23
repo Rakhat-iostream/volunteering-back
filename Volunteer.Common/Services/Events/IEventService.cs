@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Volunteer.Common.Models;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Events;
+using Volunteer.Common.Models.DTOs.Volunteers;
 
 namespace Volunteer.Common.Services.Events
 {
@@ -16,6 +18,7 @@ namespace Volunteer.Common.Services.Events
         public Task DeleteAsync(int eventId);
         public Task<Event> JoinToEvent(int eventId, Models.Domain.Volunteer volunteer);
         public Task<Event> LeaveFromEvent(int eventId, Models.Domain.Volunteer volunteer);
+        public Task<PageResponse<VolunteerProfileDto>> GetEventMembers(EventClientRequest request);
 
     }
 }

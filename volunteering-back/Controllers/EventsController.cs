@@ -6,8 +6,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Volunteer.Common.Models;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Events;
+using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Services.Events;
 using Volunteer.Common.Services.Organizations;
 using Volunteer.Common.Services.Users;
@@ -189,6 +191,33 @@ namespace volunteering_back.Controllers
             {
                 _eventService.CompleteEvent(eventId);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<VolunteerProfileDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("event/members")]
+        public async Task<IActionResult> GetEventMembers([FromQuery] EventClientRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _userService.GetSignedUser(cancellationToken);
+
+                var result = await _eventService.GetEventMembers(request);
+                return Ok(result);
             }
             catch (Exception e)
             {

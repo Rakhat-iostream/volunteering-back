@@ -122,5 +122,14 @@ namespace Volunteer.Dal.Repositories.Events
 
             return events;
         }
+
+        public ICollection<Common.Models.Domain.Volunteer> GetEventMembers(int eventId)
+        {
+            var events = _db.Events.Where(x => x.EventId == eventId).FirstOrDefault();
+
+            var volunteers = _db.Volunteers.Where(x => events.VolunteerIds.Contains(x.VolunteerId)).ToList();
+
+            return volunteers;
+        }
     }
 }

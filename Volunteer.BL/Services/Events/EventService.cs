@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Volunteer.Common.Extensions;
 using Volunteer.Common.Models;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Events;
+using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Repositories.Events;
 using Volunteer.Common.Repositories.Organizations;
 using Volunteer.Common.Services.Events;
@@ -117,6 +119,23 @@ namespace Volunteer.BL.Services.Events
         {
             var result = await _eventRepository.LeaveFromEvent(eventId, volunteer);
             return result;
+        }
+
+        public async Task<PageResponse<VolunteerProfileDto>> GetEventMembers(EventClientRequest request)
+        {
+            var candidates = _eventRepository.GetEventMembers(request.EventId ?? 0);
+
+            var total = candidates.Count();
+            var model = _mapper.Map<List<VolunteerProfileDto>>(candidates);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            return new PageResponse<VolunteerProfileDto>
+            {
+                Total = total,
+                Result = result
+            };
+
         }
     }
 }

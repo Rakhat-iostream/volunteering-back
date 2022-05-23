@@ -105,7 +105,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpGet("candidates")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetCandidates([FromQuery] PageRequest request, CancellationToken cancellationToken)
         {
             try
             {
