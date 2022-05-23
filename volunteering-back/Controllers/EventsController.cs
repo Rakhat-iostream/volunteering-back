@@ -34,7 +34,7 @@ namespace volunteering_back.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventViewDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -71,7 +71,7 @@ namespace volunteering_back.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<EventViewDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

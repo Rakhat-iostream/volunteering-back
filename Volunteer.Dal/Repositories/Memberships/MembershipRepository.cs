@@ -8,6 +8,7 @@ using Volunteer.Dal.SqlContext;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.Domain.ViewModels;
 using AutoMapper;
+using Volunteer.Common.Models.ClientRequests;
 
 namespace Volunteer.Dal.Repositories.Memberships
 {
@@ -52,14 +53,41 @@ namespace Volunteer.Dal.Repositories.Memberships
             return membership;
         }
 
-        /*public void ChangeRequest(MembershipViewModel model)
+        public Membership ChangeRequest(MembershipClientRequest clientRequest)
         {
-            var entity = _db.Memberships.FirstOrDefault(x => x.MembershipId.Equals(model.MembershipId));
+            var request = _db.Memberships.FirstOrDefault(x => x.MembershipId.Equals(clientRequest.MembershipId));
 
-            if (entity == null) return;
+            if (request == null)
+            {
+                throw new Exception("Not Found");
+            }
 
-            entity.MembershipStatus = model.MembershipStatus;
-            entity.
-        }*/
+            if (clientRequest.MembershipStatus.HasValue)
+            {
+                request.MembershipStatus = clientRequest.MembershipStatus ?? 0;
+            }
+
+            if (request.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.OrganizationAccepted)
+            {
+                var volunteer = AddMembershipIdToVolunteer(request);
+            }
+
+            _db.Memberships.Update(request);
+            _db.SaveChangesAsync();
+
+            return request;
+        }
+
+        private Common.Models.Domain.Volunteer AddMembershipIdToVolunteer(Membership membership)
+        {
+            var entity = _db.Volunteers.FirstOrDefault(x => membership.VolunteerIds.Contains(x.VolunteerId));
+
+            entity.MembershipId = membership.MembershipId;
+
+            _db.Volunteers.Update(entity);
+            _db.SaveChanges();
+
+            return entity;
+        }
     }
 }
