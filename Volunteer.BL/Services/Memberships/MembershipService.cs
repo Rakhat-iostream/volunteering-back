@@ -66,5 +66,22 @@ namespace Volunteer.BL.Services.Memberships
             return model;
         }
 
+        public async Task<PageResponse<MembershipViewModel>> InvitationsList(FilterMembershipRequest request, int volunteerId)
+        {
+            var invitations = _membershipRepository.InvitationsList(request, volunteerId);
+
+            var total = invitations.Count();
+            var model = _mapper.Map<List<MembershipViewModel>>(invitations);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            return new PageResponse<MembershipViewModel>
+            {
+                Total = total,
+                Result = result
+            };
+
+        }
+
     }
 }

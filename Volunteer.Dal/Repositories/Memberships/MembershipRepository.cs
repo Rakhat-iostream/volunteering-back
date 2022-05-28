@@ -145,6 +145,14 @@ namespace Volunteer.Dal.Repositories.Memberships
 
             return request;
         }
+
+        public ICollection<Membership> InvitationsList(FilterMembershipRequest request, int volunteerId)
+        {
+            var entity = _db.Memberships.Where(x => x.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.NeedVolunteerApprove
+            && x.VolunteerId == volunteerId).ToList();
+
+            return entity;
+        }
         #endregion
     }
 }

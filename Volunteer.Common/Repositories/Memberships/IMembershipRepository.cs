@@ -12,5 +12,6 @@ namespace Volunteer.Common.Repositories.Memberships
         public ICollection<Models.Domain.Volunteer> GetCandidates(int organizationId);
         public void InviteMembership(int organizationId, int volunteerId);
         public Task<Membership> VolunteerAnswer(MembershipClientRequest clientRequest);
+        public ICollection<Membership> InvitationsList(FilterMembershipRequest request, int volunteerId);
     }
 }

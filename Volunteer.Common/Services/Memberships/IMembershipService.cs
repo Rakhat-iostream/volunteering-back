@@ -19,5 +19,6 @@ namespace Volunteer.Common.Services.Memberships
         public Task<PageResponse<VolunteerProfileDto>> GetCandidates(PageRequest request, int organizationId);
         public void InviteMembership(int organizationId, int volunteerId);
         public Task<Membership> ChangeVolunteerAnswer(MembershipClientRequest clientRequest);
+        public Task<PageResponse<MembershipViewModel>> InvitationsList(FilterMembershipRequest request, int volunteerId);
     }
 }
