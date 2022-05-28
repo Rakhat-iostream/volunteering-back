@@ -9,6 +9,7 @@ using Volunteer.Common.Models;
 using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Organizations;
+using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Services.Organizations;
 using Volunteer.Common.Services.Users;
 
@@ -22,8 +23,8 @@ namespace volunteering_back.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public OrganizationsController(IOrganizationService organizationService, 
-            IUserService userService, 
+        public OrganizationsController(IOrganizationService organizationService,
+            IUserService userService,
             IMapper mapper)
         {
             _organizationService = organizationService;
@@ -94,30 +95,55 @@ namespace volunteering_back.Controllers
             }
         }
 
-            [Authorize]
-            [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<OrganizationProfileDto>))]
-            [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
-            [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-            [ProducesResponseType(StatusCodes.Status403Forbidden)]
-            [HttpGet("list")]
-            public async Task<IActionResult> GetAll([FromQuery] FilterOrganizationRequest request)
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<OrganizationProfileDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAll([FromQuery] FilterOrganizationRequest request)
+        {
+            try
             {
-                try
-                {
-                    var result = await _organizationService.GetAll(request);
-                    return Ok(result);
-                }
-                catch (Exception e)
-                {
-                    var error = new JsonResult(new
-                    {
-                        statusCode = 400,
-                        message = e.Message,
-                    });
-
-                    return BadRequest(error.Value);
-                }
+                var result = await _organizationService.GetAll(request);
+                return Ok(result);
             }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "OrganizationAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<VolunteerProfileDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("list/volunteers")]
+        public async Task<IActionResult> GetAllVolunteers([FromQuery] FilterVolunteerRequest request)
+        {
+            try
+            {
+                var result = await _organizationService.GetAllVolunteers(request);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
 
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganizationProfileDto))]

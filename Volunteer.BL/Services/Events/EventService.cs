@@ -71,7 +71,7 @@ namespace Volunteer.BL.Services.Events
 
         public async Task<EventViewDto> CreateAsync(EventAddDto dto, Organization organization)
         {
-            Event events = new Event(); 
+            Event events = new Event();
             events.Organization = organization;
             events.OrganizationId = organization.OrganizationId;
             events.EventId = new int();
@@ -81,6 +81,9 @@ namespace Volunteer.BL.Services.Events
             events.Description = dto.Description;
             events.IsFinished = false;
             events.VolunteeringCategory = dto.VolunteeringCategory;
+            events.Region = dto.Region;
+            events.Location = dto.Location;
+            events.Image = dto.Image;
 
             await _eventRepository.CreateAsync(events);
 

@@ -77,7 +77,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPut("changeRequest")]
-        public async Task<IActionResult> ChangeRequest([FromQuery] MembershipClientRequest clientRequest, CancellationToken cancellationToken)
+        public async Task<IActionResult> ChangeRequest([FromQuery] MembershipClientRequest clientRequest)
         {
             try
             {
@@ -115,6 +115,63 @@ namespace volunteering_back.Controllers
 
                 var result = await _membershipService.GetCandidates(request, organization.OrganizationId);
                 return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "Volunteer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MembershipViewModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("volunteer-answer")]
+        public async Task<IActionResult> VolunteerAnswer([FromQuery] MembershipClientRequest clientRequest)
+        {
+            try
+            {
+                var model = await _membershipService.ChangeVolunteerAnswer(clientRequest);
+
+                var result = _mapper.Map<MembershipViewModel>(model);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "OrganizationAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPost("invite-volunteer")]
+        public async Task<IActionResult> InviteVolunteer(int volunteerId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _userService.GetSignedUser(cancellationToken);
+                //var mapped = _mapper.Map<User>(user);
+
+                var organization = await _organizationService.GetByUserId(user.Id);
+
+                 _membershipService.InviteMembership(organization.OrganizationId, volunteerId);
+                return Ok();
             }
             catch (Exception e)
             {

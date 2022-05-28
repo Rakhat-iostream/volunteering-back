@@ -6,6 +6,7 @@ using Volunteer.Common.Models;
 using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Organizations;
+using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Repositories.Organizations;
 using Volunteer.Common.Repositories.Users;
 using Volunteer.Common.Services.Organizations;
@@ -53,6 +54,23 @@ namespace Volunteer.BL.Services.Organizations
                 Total = total,
                 Result = result
                 
+            };
+        }
+
+        public async Task<PageResponse<VolunteerProfileDto>> GetAllVolunteers(FilterVolunteerRequest request)
+        {
+            var volunteers = _organizationRepository.GetAllVolunteers(request);
+
+            var total = volunteers.Count();
+            var model = _mapper.Map<List<VolunteerProfileDto>>(volunteers);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            return new PageResponse<VolunteerProfileDto>
+            {
+                Total = total,
+                Result = result
+
             };
         }
 

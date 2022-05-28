@@ -15,5 +15,6 @@ namespace Volunteer.Common.Repositories.Organizations
         public Task<Organization> CreateAsync(Organization organization);
         public Task<Organization> UpdateAsync(Organization organization);
         public ICollection<Organization> GetAll(FilterOrganizationRequest request);
+        public ICollection<Common.Models.Domain.Volunteer> GetAllVolunteers(FilterVolunteerRequest request);
     }
 }

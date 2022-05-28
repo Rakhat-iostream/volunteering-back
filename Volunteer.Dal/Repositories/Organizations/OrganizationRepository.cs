@@ -44,6 +44,13 @@ namespace Volunteer.Dal.Repositories.Organizations
             return entity;
         }
 
+        public ICollection<Common.Models.Domain.Volunteer> GetAllVolunteers(FilterVolunteerRequest request)
+        {
+            var entity = _db.Volunteers.ToList();
+
+            return entity;
+        }
+
         public async Task<Organization> CreateAsync(Organization organization)
         {
             if (organization != null)

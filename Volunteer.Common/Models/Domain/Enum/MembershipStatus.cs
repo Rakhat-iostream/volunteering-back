@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Volunteer.Common.Models.Domain.Enum
 {
@@ -18,6 +13,13 @@ namespace Volunteer.Common.Models.Domain.Enum
 
         OrganizationRejected = 3,
 
-        Kicked = 4
+        Kicked = 4,
+
+        NeedVolunteerApprove = 5,
+
+        VolunteerAccepted = 6,
+
+        VolunteerRejected = 7,
+
     }
 }

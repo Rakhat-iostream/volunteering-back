@@ -84,7 +84,7 @@ namespace Volunteer.Dal.Repositories.Events
 
         public async Task<Event> JoinToEvent(int eventId, Common.Models.Domain.Volunteer volunteer)
         {
-            var events = await _db.Events.FirstOrDefaultAsync(x => x.EventId == eventId);
+            var events = await _db.Events.FirstOrDefaultAsync(x => x.EventId == eventId && x.IsFinished == false);
 
             var volId = volunteer.VolunteerId;
 
@@ -110,7 +110,7 @@ namespace Volunteer.Dal.Repositories.Events
 
         public async Task<Event> LeaveFromEvent(int eventId, Common.Models.Domain.Volunteer volunteer)
         {
-            var events = await _db.Events.FirstOrDefaultAsync(x => x.EventId == eventId);
+            var events = await _db.Events.FirstOrDefaultAsync(x => x.EventId == eventId && x.IsFinished == false);
 
             var volId = volunteer.VolunteerId;
 

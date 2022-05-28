@@ -54,6 +54,17 @@ namespace Volunteer.BL.Services.Memberships
             };
 
         }
-        
+
+        public void InviteMembership(int organizationId, int volunteerId)
+        {
+              _membershipRepository.InviteMembership(organizationId, volunteerId);
+        }
+
+        public async Task<Membership> ChangeVolunteerAnswer(MembershipClientRequest clientRequest)
+        {
+            var model = await _membershipRepository.VolunteerAnswer(clientRequest);
+            return model;
+        }
+
     }
 }

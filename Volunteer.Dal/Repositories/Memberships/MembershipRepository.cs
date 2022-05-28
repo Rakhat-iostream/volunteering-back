@@ -22,6 +22,8 @@ namespace Volunteer.Dal.Repositories.Memberships
             _mapper = mapper;
         }
 
+
+        #region OrganizationSIDE
         public async Task<Membership> AddMembership(Membership model, int volunteerId)
         {
             //var exists = _db.Memberships.FirstOrDefault(x => x.OrganizationId == model.OrganizationId);
@@ -102,5 +104,47 @@ namespace Volunteer.Dal.Repositories.Memberships
             }
             return volunteers;
         }
+
+        #endregion
+
+        #region VolunteerSIDE
+        public void InviteMembership(int organizationId, int volunteerId)
+        {
+            var membership = new Membership();
+            membership.MembershipId = new int();
+            membership.OrganizationId = organizationId;
+            membership.VolunteerId = volunteerId;
+            //приглашение со стороны организации
+            membership.MembershipStatus = Common.Models.Domain.Enum.MembershipStatus.NeedVolunteerApprove;
+
+             _db.Memberships.Add(membership);
+             _db.SaveChanges();
+        }
+
+        public async Task<Membership> VolunteerAnswer(MembershipClientRequest clientRequest)
+        {
+            var request = _db.Memberships.FirstOrDefault(x => x.MembershipId.Equals(clientRequest.MembershipId));
+
+            if (request == null)
+            {
+                throw new Exception("Not Found");
+            }
+
+            if (clientRequest.MembershipStatus.HasValue)
+            {
+                request.MembershipStatus = clientRequest.MembershipStatus ?? 0;
+            }
+
+            if (request.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.VolunteerAccepted)
+            {
+                var volunteer = AddMembershipIdToVolunteer(request);
+            }
+
+            _db.Memberships.Update(request);
+            await _db.SaveChangesAsync();
+
+            return request;
+        }
+        #endregion
     }
 }
