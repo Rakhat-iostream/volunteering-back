@@ -20,6 +20,6 @@ namespace Volunteer.Common.Models.DTOs.Organizations
         public DateTime? OrganizedDate { get; set; }
         public int Experience { get; set; }
         public string? Description { get; set; }
-        public string Logo { get; set; }
+        public string? Logo { get; set; }
     }
 }
