@@ -185,7 +185,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPut("event/complete")]
-        public async Task<IActionResult> CompleteEvent(int eventId)
+        public IActionResult CompleteEvent(int eventId)
         {
             try
             {

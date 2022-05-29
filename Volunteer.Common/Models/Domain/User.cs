@@ -12,18 +12,12 @@ namespace Volunteer.Common.Models.Domain
         public string PasswordHash { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        //public string FullName { get; set; }
         public string? Email { get; set; }
         public string Phone { get; set; }
         public UserRoles Role { get; set; }
         public UserStatus Status { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
-
-        /*public void SetFullName(string name, string surname)
-        {
-            FullName = $"{name} {surname}";
-        }*/
 
         public User()
         {
