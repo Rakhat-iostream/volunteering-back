@@ -17,5 +17,6 @@ namespace Volunteer.Common.Models.DTOs.User
         public UserStatus Status { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
+        public string Avatar { get; set; }
     }
 }

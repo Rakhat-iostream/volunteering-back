@@ -67,6 +67,7 @@ namespace Volunteer.Dal.Repositories.Users
                 LastName = dto.LastName,
                 PasswordHash = _passwordHasher.Hash(dto.Password),
                 Role = Common.Models.Domain.Enum.UserRoles.User,
+                Avatar = dto.Avatar,
             };
 
             //user.SetFullName(dto.FirstName, dto.LastName);
@@ -90,6 +91,7 @@ namespace Volunteer.Dal.Repositories.Users
             entity.Role = user.Role;
             entity.Status = user.Status;
             entity.UpdatedAt = DateTime.UtcNow;
+            entity.Avatar = user.Avatar ?? entity.Avatar;
 
             var result = _db.Users.Update(entity);
             await _db.SaveChangesAsync(cancellationToken);

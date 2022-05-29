@@ -9,6 +9,7 @@ using Volunteer.Common.Models.DTOs.Organizations;
 using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Repositories.Organizations;
 using Volunteer.Common.Repositories.Users;
+using Volunteer.Common.Repositories.Volunteers;
 using Volunteer.Common.Services.Organizations;
 
 namespace Volunteer.BL.Services.Organizations
@@ -66,6 +67,16 @@ namespace Volunteer.BL.Services.Organizations
 
             var result = model.Skip(request.Skip).Take(request.Take);
 
+
+            foreach (var res in result)
+            {
+                var user = _userRepository.GetAsync(res.UserId).Result;
+                res.Login = user.Login;
+                res.Phone = user.Phone;
+                res.Email = user.Email;
+                res.Avatar = user.Avatar;
+            }
+
             return new PageResponse<VolunteerProfileDto>
             {
                 Total = total,
@@ -88,6 +99,7 @@ namespace Volunteer.BL.Services.Organizations
             organization.UserId = user.Id;
             organization.VolunteeringCategories = dto.VolunteeringCategories;
             organization.CEO = dto.CEO;
+            organization.Logo = dto.Logo;
 
             await _organizationRepository.CreateAsync(organization);
 

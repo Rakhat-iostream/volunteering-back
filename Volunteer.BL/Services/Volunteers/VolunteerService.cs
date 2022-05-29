@@ -41,6 +41,13 @@ namespace Volunteer.BL.Services.Volunteers
 
             var model = _mapper.Map<VolunteerProfileDto>(entity);
 
+            var user = _userRepository.GetAsync(entity.UserId ?? 0).Result;
+
+            model.Login = user.Login;
+            model.Phone = user.Phone;
+            model.Email = user.Email;
+            model.Avatar = user.Avatar;
+
             return model;
         }
 
@@ -59,6 +66,9 @@ namespace Volunteer.BL.Services.Volunteers
             await _volunteerRepository.CreateAsync(volunteer);
 
             var profile = _mapper.Map<VolunteerProfileDto>(volunteer);
+
+            profile.UserId = user.Id;
+            profile.Avatar = user.Avatar;
 
             user.Role = Common.Models.Domain.Enum.UserRoles.Volunteer;
             await _userRepository.UpdateAsync(user);

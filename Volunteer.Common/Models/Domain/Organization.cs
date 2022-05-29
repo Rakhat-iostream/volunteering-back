@@ -22,10 +22,7 @@ namespace Volunteer.Common.Models.Domain
 
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
-        [Phone]
-        public string Phone { get; set; }
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Logo { get; set; }
 
     }
 }

@@ -75,9 +75,6 @@ namespace volunteering_back.Controllers
             {
                 var user = await _userService.GetSignedUser(cancellationToken);
                 var result = await _volunteerService.GetById(volunteerId);
-                result.Login = user.Login;
-                result.Phone = user.Phone;
-                result.Email = user.Email;
                 return Ok(result);
             }
             catch (Exception e)
