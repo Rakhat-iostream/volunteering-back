@@ -135,11 +135,7 @@ namespace Volunteer.BL.Services.Auth
         {
             var user = await _userRepository.CreateAsync(dto);
 
-            user.PasswordHash = _passwordHasher.Hash(dto.Password);
-
-            var entity = await _userRepository.UpdateAsync(user, cancellationToken);
-
-            await Authenticate(entity, cancellationToken);
+            await Authenticate(user, cancellationToken);
             return await this.GetUserProfile(user);
         }
 
