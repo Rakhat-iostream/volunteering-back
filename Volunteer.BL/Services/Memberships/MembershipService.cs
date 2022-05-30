@@ -10,6 +10,7 @@ using Volunteer.Common.Models.Domain.ViewModels;
 using Volunteer.Common.Models.DTOs.Memberships;
 using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Repositories.Memberships;
+using Volunteer.Common.Repositories.Users;
 using Volunteer.Common.Services.Memberships;
 
 namespace Volunteer.BL.Services.Memberships
@@ -17,11 +18,13 @@ namespace Volunteer.BL.Services.Memberships
     public class MembershipService : IMembershipService
     {
         private readonly IMembershipRepository _membershipRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public MembershipService(IMembershipRepository membershipRepository, IMapper mapper)
+        public MembershipService(IMembershipRepository membershipRepository, IUserRepository userRepository, IMapper mapper)
         {
             _membershipRepository = membershipRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -46,6 +49,17 @@ namespace Volunteer.BL.Services.Memberships
             var model = _mapper.Map<List<VolunteerProfileDto>>(candidates);
 
             var result = model.Skip(request.Skip).Take(request.Take);
+
+            foreach (var res in result)
+            {
+                var user = _userRepository.GetAsync(res.UserId).Result;
+                res.Login = user.Login;
+                res.Phone = user.Phone;
+                res.Email = user.Email;
+                res.Avatar = user.Avatar;
+                res.FirstName = user.FirstName;
+                res.LastName = user.LastName;
+            }
 
             return new PageResponse<VolunteerProfileDto>
             {
