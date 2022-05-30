@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Volunteer.Dal.SqlContext;
@@ -10,9 +11,10 @@ using Volunteer.Dal.SqlContext;
 namespace Volunteer.Dal.Migrations
 {
     [DbContext(typeof(VolContext))]
-    partial class VolContextModelSnapshot : ModelSnapshot
+    [Migration("20220530194550_OrganizationValidation")]
+    partial class OrganizationValidation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

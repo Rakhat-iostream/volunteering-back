@@ -11,6 +11,7 @@ namespace Volunteer.Common.Models.Domain
         public int OrganizationId { get; set; }
         public string OrganizationName { get; set; }
         public string Location { get; set; }
+        public ValidationStatus ValidationStatus { get; set; }
         public Region? Region { get; set; }
         public VolunteeringCategories[] VolunteeringCategories { get; set; }
         public OrganizationTypes[] OrganizationTypes { get; set; }

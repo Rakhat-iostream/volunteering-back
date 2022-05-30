@@ -15,5 +15,7 @@ namespace Volunteer.Common.Services.Organizations
         public Task<PageResponse<VolunteerProfileDto>> GetAllVolunteers(FilterVolunteerRequest request);
         public Task<OrganizationProfileDto> CreateAsync(OrganizationAddDto dto, User user);
         public Task<OrganizationProfileDto> UpdateAsync(OrganizationUpdateDto dto, User user);
+        public Task DeleteAsync(int organizationId);
+        public Task<Organization> VerifyOrganization(int organizationId);
     }
 }

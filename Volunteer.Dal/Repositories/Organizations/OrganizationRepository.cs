@@ -81,5 +81,24 @@ namespace Volunteer.Dal.Repositories.Organizations
 
             return result.Entity;
         }
+
+        public async Task DeleteAsync(int organizationId)
+        {
+            var entity = await _db.Organizations.FirstOrDefaultAsync(x => x.OrganizationId == organizationId);
+            _db.Organizations.Remove(entity);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<Organization> VerifyOrganization(int organizationId)
+        {
+            var entity = await _db.Organizations.FirstOrDefaultAsync(x => x.OrganizationId == organizationId);
+
+            entity.ValidationStatus = Common.Models.Domain.Enum.ValidationStatus.Verified;
+
+             _db.Organizations.Update(entity);
+            await _db.SaveChangesAsync();
+
+            return entity;
+        }
     }
 }

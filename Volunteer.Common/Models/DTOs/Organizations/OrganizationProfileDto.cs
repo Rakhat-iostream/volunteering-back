@@ -28,6 +28,7 @@ namespace Volunteer.Common.Models.DTOs.Organizations
 
         public string Phone { get; set; }
         public string Email { get; set; }
+        public ValidationStatus ValidationStatus { get; set; }
 
     }
 }

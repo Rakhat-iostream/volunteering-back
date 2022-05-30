@@ -102,6 +102,7 @@ namespace Volunteer.BL.Services.Organizations
             organization.VolunteeringCategories = dto.VolunteeringCategories;
             organization.CEO = dto.CEO;
             organization.Logo = dto.Logo;
+            organization.ValidationStatus = Common.Models.Domain.Enum.ValidationStatus.Unverified;
 
             await _organizationRepository.CreateAsync(organization);
 
@@ -126,6 +127,17 @@ namespace Volunteer.BL.Services.Organizations
 
             var profile = _mapper.Map<OrganizationProfileDto>(organization);
             return profile;
+        }
+
+        public async Task DeleteAsync(int organizationId)
+        {
+            await _organizationRepository.DeleteAsync(organizationId);
+        }
+
+        public async Task<Organization> VerifyOrganization(int organizationId)
+        {
+            var result = await _organizationRepository.VerifyOrganization(organizationId);
+            return result;
         }
     }
 }

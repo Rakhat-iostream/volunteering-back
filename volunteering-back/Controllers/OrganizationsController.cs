@@ -120,7 +120,7 @@ namespace volunteering_back.Controllers
             }
         }
 
-        [Authorize(Roles = "OrganizationAdmin")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<VolunteerProfileDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -175,6 +175,7 @@ namespace volunteering_back.Controllers
             }
         }
 
+        [Authorize(Roles = "OrganizationAdmin,Administrator")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganizationProfileDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -191,6 +192,56 @@ namespace volunteering_back.Controllers
                 result.Phone = user.Phone;
                 result.Email = user.Email;
                 return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganizationProfileDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("admin/organization/verify")]
+        public async Task<IActionResult> VerifyOrganization(int organizationId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _organizationService.VerifyOrganization(organizationId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "OrganizationAdmin,Administrator")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int organizationId)
+        {
+            try
+            {
+                await _organizationService.DeleteAsync(organizationId);
+                return Ok();
             }
             catch (Exception e)
             {
