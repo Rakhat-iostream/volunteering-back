@@ -29,6 +29,8 @@ namespace Volunteer.Common.Models.DTOs.Volunteers
         public int UserId { get; set; }
         public string Avatar { get; set; }
         public int MembershipId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
     }
 }

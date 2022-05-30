@@ -47,6 +47,8 @@ namespace Volunteer.BL.Services.Volunteers
             model.Phone = user.Phone;
             model.Email = user.Email;
             model.Avatar = user.Avatar;
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
 
             return model;
         }

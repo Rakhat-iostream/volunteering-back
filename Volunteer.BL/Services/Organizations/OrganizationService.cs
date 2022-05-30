@@ -75,6 +75,8 @@ namespace Volunteer.BL.Services.Organizations
                 res.Phone = user.Phone;
                 res.Email = user.Email;
                 res.Avatar = user.Avatar;
+                res.FirstName = user.FirstName;
+                res.LastName = user.LastName;
             }
 
             return new PageResponse<VolunteerProfileDto>
