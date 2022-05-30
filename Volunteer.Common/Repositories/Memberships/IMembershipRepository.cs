@@ -13,5 +13,6 @@ namespace Volunteer.Common.Repositories.Memberships
         public void InviteMembership(int organizationId, int volunteerId);
         public Task<Membership> VolunteerAnswer(MembershipClientRequest clientRequest);
         public ICollection<Membership> InvitationsList(FilterMembershipRequest request, int volunteerId);
+        public ICollection<Membership> GetMemberShipsByVolunteerId(FilterMembershipRequest request, int volunteerId);
     }
 }

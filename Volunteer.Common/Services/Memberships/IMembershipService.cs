@@ -20,5 +20,6 @@ namespace Volunteer.Common.Services.Memberships
         public void InviteMembership(int organizationId, int volunteerId);
         public Task<Membership> ChangeVolunteerAnswer(MembershipClientRequest clientRequest);
         public Task<PageResponse<MembershipViewModel>> InvitationsList(FilterMembershipRequest request, int volunteerId);
+        public Task<PageResponse<MembershipViewModel>> GetMemberShipsByVolunteerId(FilterMembershipRequest request, int volunteerId);
     }
 }

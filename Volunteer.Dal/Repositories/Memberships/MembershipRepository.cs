@@ -153,6 +153,13 @@ namespace Volunteer.Dal.Repositories.Memberships
 
             return entity;
         }
+
+        public ICollection<Membership> GetMemberShipsByVolunteerId(FilterMembershipRequest request, int volunteerId)
+        {
+            var entity = _db.Memberships.Where(x => x.VolunteerId == volunteerId).ToList();
+
+            return entity;
+        }
         #endregion
     }
 }

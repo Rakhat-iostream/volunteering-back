@@ -46,7 +46,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MembershipViewModel))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPost("request-membership")]
+        [HttpPost("volunteer/request-membership")]
         public async Task<IActionResult> CreateAsync([FromBody] MembershipAddDto model, CancellationToken cancellationToken)
         {
             try
@@ -76,7 +76,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("changeRequest")]
+        [HttpPut("organization/changeRequest")]
         public async Task<IActionResult> ChangeRequest([FromQuery] MembershipClientRequest clientRequest)
         {
             try
@@ -104,7 +104,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpGet("candidates")]
+        [HttpGet("organization/candidates")]
         public async Task<IActionResult> GetCandidates([FromQuery] PageRequest request, CancellationToken cancellationToken)
         {
             try
@@ -133,7 +133,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPut("volunteer-answer")]
+        [HttpPut("volunteer/answer")]
         public async Task<IActionResult> VolunteerAnswer([FromQuery] MembershipClientRequest clientRequest)
         {
             try
@@ -160,7 +160,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpPost("invite-volunteer")]
+        [HttpPost("organization/invite-volunteer")]
         public async Task<IActionResult> InviteVolunteer(int volunteerId, CancellationToken cancellationToken)
         {
             try
@@ -190,7 +190,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [HttpGet("list/invitations")]
+        [HttpGet("list/volunteer/invitations")]
         public async Task<IActionResult> InvitationsList([FromQuery] FilterMembershipRequest request, CancellationToken cancellationToken)
         {
             try
@@ -200,6 +200,35 @@ namespace volunteering_back.Controllers
                 var volunteer = await _volunteerService.GetByUserId(user.Id);
 
                 var result = await _membershipService.InvitationsList(request, volunteer.VolunteerId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "Volunteer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<MembershipViewModel>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("list/volunteer/memberships")]
+        public async Task<IActionResult> GetMembershipsByVolunteerId([FromQuery] FilterMembershipRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _userService.GetSignedUser(cancellationToken);
+
+                var volunteer = await _volunteerService.GetByUserId(user.Id);
+
+                var result = await _membershipService.GetMemberShipsByVolunteerId(request, volunteer.VolunteerId);
                 return Ok(result);
             }
             catch (Exception e)
