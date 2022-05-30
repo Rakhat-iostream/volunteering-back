@@ -3,6 +3,7 @@ using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.Domain.ViewModels;
 using Volunteer.Common.Models.DTOs.Events;
 using Volunteer.Common.Models.DTOs.Memberships;
+using Volunteer.Common.Models.DTOs.News;
 using Volunteer.Common.Models.DTOs.Organizations;
 using Volunteer.Common.Models.DTOs.User;
 using Volunteer.Common.Models.DTOs.Volunteers;
@@ -38,6 +39,8 @@ namespace Volunteer.Configuration
 
             CreateMap<Membership, MembershipViewModel>().ReverseMap();
             CreateMap<Membership, MembershipAddDto>().ReverseMap();
+
+            CreateMap<News, NewsAddOrUpdateDto>().ReverseMap();
         }
     }
 }

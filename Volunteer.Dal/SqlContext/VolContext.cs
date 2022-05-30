@@ -32,6 +32,7 @@ namespace Volunteer.Dal.SqlContext
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Membership> Memberships { get; set; }
+        public DbSet<News> News { get; set; }
 
     }
 }

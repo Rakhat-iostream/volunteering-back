@@ -35,6 +35,7 @@ namespace Volunteer.BL.Configuration
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IMembershipService, MembershipService>();
+            services.AddScoped<INewsService, NewsService>();
 
             services.AddScoped<IExcelGenerator, ExcelGenerator>();
             services.AddScoped<IGetExcelService, GetExcelService>();

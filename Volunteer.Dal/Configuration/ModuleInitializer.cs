@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Volunteer.Common.Repositories;
 using Volunteer.Common.Repositories.Auth;
 using Volunteer.Common.Repositories.Events;
 using Volunteer.Common.Repositories.Memberships;
@@ -46,7 +47,7 @@ namespace Volunteer.Dal.Configuration
             services.AddTransient<IOrganizationRepository, OrganizationRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddTransient<IMembershipRepository, MembershipRepository>();
-
+            services.AddTransient<INewsRepository, NewsRepository>();
         }
     }
 }
