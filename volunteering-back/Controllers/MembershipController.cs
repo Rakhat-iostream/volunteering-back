@@ -43,7 +43,7 @@ namespace volunteering_back.Controllers
 
         [Authorize(Roles = "Volunteer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MembershipViewModel))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpPost("request-membership")]
@@ -55,7 +55,8 @@ namespace volunteering_back.Controllers
 
                 var volunteer = await _volunteerService.GetByUserId(user.Id);
 
-                var result = await _membershipService.AddMembership(model, volunteer.VolunteerId);
+                var res = await _membershipService.AddMembership(model, volunteer.VolunteerId);
+                var result = _mapper.Map<MembershipViewModel>(res);
                 return Ok(result);
             }
             catch (Exception e)
