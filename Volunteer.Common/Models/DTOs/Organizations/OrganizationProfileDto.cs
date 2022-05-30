@@ -13,7 +13,7 @@ namespace Volunteer.Common.Models.DTOs.Organizations
         public int OrganizationId { get; set; }
         public string OrganizationName { get; set; }
         public string Location { get; set; }
-
+        public string Logo { get; set; }
         public Region Region { get; set; }
 
         public VolunteeringCategories[] VolunteeringCategories { get; set; }

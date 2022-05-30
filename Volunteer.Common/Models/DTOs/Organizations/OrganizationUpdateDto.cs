@@ -28,5 +28,6 @@ namespace Volunteer.Common.Models.DTOs.Organizations
         public string? Phone { get; set; }
         [EmailAddress]
         public string? Email { get; set; }
+        public string? Logo { get; set; }
     }
 }

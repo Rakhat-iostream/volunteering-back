@@ -204,7 +204,7 @@ namespace volunteering_back.Controllers
             }
         }
 
-        [Authorize("OrganizationAdmin")]
+        [Authorize(Roles = "OrganizationAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<VolunteerProfileDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
