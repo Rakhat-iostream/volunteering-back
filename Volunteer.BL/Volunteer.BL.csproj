@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Volunteer.Common\Volunteer.Common.csproj" />
+    <ProjectReference Include="..\Volunteer.Dal\Volunteer.Dal.csproj" />
   </ItemGroup>
 
 </Project>

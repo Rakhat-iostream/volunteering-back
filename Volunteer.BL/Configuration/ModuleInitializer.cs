@@ -39,6 +39,8 @@ namespace Volunteer.BL.Configuration
             services.AddScoped<IExcelGenerator, ExcelGenerator>();
             services.AddScoped<IGetExcelService, GetExcelService>();
 
+            services.AddHostedService<ScopedBackgroundService>();
+            services.AddScoped<IScopedProcessingService, UpdaterJobService>();
 
             return services;
         }

@@ -5,6 +5,7 @@ using NCrontab;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Volunteer.Common.Services;
 
 namespace Volunteer.BL.Services
 {
@@ -15,7 +16,7 @@ namespace Volunteer.BL.Services
         private CrontabSchedule _schedule;
         private DateTime _nextRun;
 
-        private string Schedule => "0 0 * * *";
+        private string Schedule => "0 */2 * * *";
 
         public ScopedBackgroundService(IServiceProvider serviceProvider,
             ILogger<ScopedBackgroundService> logger)
@@ -53,10 +54,10 @@ namespace Volunteer.BL.Services
 
             using (IServiceScope scope = _serviceProvider.CreateScope())
             {
-                /*IScopedProcessingService scopedProcessingService =
+                IScopedProcessingService scopedProcessingService =
                     scope.ServiceProvider.GetRequiredService<IScopedProcessingService>();
 
-                await scopedProcessingService.DoWorkAsync(stoppingToken);*/
+                await scopedProcessingService.DoWorkAsync(stoppingToken);
             }
         }
 
