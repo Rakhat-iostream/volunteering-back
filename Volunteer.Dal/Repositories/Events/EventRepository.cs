@@ -131,5 +131,32 @@ namespace Volunteer.Dal.Repositories.Events
 
             return volunteers;
         }
+
+        public async Task<Event> SubmitAttendance(int eventId, string code, int volunteerId)
+        {
+            var events = _db.Events.FirstOrDefault(x => x.EventId == eventId && x.IsFinished == false);
+
+            if (events.AttendanceCode == code)
+            {
+                if (events.AttendedVolunteerIds == null)
+                {
+                    events.AttendedVolunteerIds = new List<int> { };
+                    events.AttendedVolunteerIds.Add(volunteerId);
+                     await _db.SaveChangesAsync();
+                }
+
+                else if (!events.AttendedVolunteerIds.Contains(volunteerId))
+                {
+                    events.AttendedVolunteerIds.Add(volunteerId);
+                     await _db.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("You have already in attended volunteers list");
+                }
+            }
+
+            return events;
+        }
     }
 }

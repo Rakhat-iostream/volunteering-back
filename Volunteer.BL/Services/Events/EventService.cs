@@ -85,6 +85,11 @@ namespace Volunteer.BL.Services.Events
             events.Location = dto.Location;
             events.Image = dto.Image;
 
+            Random generator = new Random();
+            var code = generator.Next(0, 10000).ToString("D4");
+
+            events.AttendanceCode = code;
+
             await _eventRepository.CreateAsync(events);
 
             var model = _mapper.Map<EventViewDto>(events);
@@ -139,6 +144,12 @@ namespace Volunteer.BL.Services.Events
                 Result = result
             };
 
+        }
+
+        public async Task<Event> SubmitAttendance(int eventId, string code, int volunteerId)
+        {
+            var result = await _eventRepository.SubmitAttendance(eventId, code, volunteerId);
+            return result;
         }
     }
 }

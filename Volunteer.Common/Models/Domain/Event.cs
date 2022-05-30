@@ -26,5 +26,8 @@ namespace Volunteer.Common.Models.Domain
         public virtual Organization Organization { get; set; }
 
         public List<int>? VolunteerIds  { get; set; }
+
+        public string AttendanceCode { get; set; }
+        public List<int>? AttendedVolunteerIds { get; set; }
     }
 }

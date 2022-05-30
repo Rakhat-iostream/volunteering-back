@@ -20,5 +20,8 @@ namespace Volunteer.Common.Models.DTOs.Events
         public bool IsFinished { get; set; }
         public int? OrganizationId { get; set; }
         public List<int>? VolunteerIds { get; set; }
+
+        public string AttendanceCode { get; set; }
+        public List<int>? AttendedVolunteerIds { get; set; }
     }
 }

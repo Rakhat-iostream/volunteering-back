@@ -210,6 +210,36 @@ namespace volunteering_back.Controllers
             }
         }
 
+        [Authorize(Roles = "Volunteer")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventViewDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpPut("volunteer/submit-attendance")]
+        public async Task<IActionResult> SubmitAttendance(int eventId, string code, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _userService.GetSignedUser(cancellationToken);
+                var mapped = _mapper.Map<User>(user);
+
+                var vol = await _volunteerService.GetByUserId(user.Id);
+
+                var result = await _eventService.SubmitAttendance(eventId,code,  vol.VolunteerId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
         protected int? GetCurrentUserProfileId()
         {
             var user = HttpContext.User;
