@@ -16,7 +16,7 @@ namespace Volunteer.BL.Services
         private CrontabSchedule _schedule;
         private DateTime _nextRun;
 
-        private string Schedule => "0 */2 * * *";
+        private string Schedule => "*/5 * * * *";
 
         public ScopedBackgroundService(IServiceProvider serviceProvider,
             ILogger<ScopedBackgroundService> logger)
