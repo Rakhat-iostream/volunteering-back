@@ -55,8 +55,8 @@ namespace volunteering_back.Controllers
 
                 var volunteer = await _volunteerService.GetByUserId(user.Id);
 
-                await _membershipService.AddMembership(model, volunteer.VolunteerId);
-                return Ok();
+                var result = await _membershipService.AddMembership(model, volunteer.VolunteerId);
+                return Ok(result);
             }
             catch (Exception e)
             {
