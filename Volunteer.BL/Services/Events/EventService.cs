@@ -146,6 +146,23 @@ namespace Volunteer.BL.Services.Events
 
         }
 
+        public async Task<PageResponse<VolunteerProfileDto>> GetEventAttenders(EventClientRequest request)
+        {
+            var attenders = _eventRepository.GetEventAttenders(request.EventId ?? 0);
+
+            var total = attenders.Count();
+            var model = _mapper.Map<List<VolunteerProfileDto>>(attenders);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            return new PageResponse<VolunteerProfileDto>
+            {
+                Total = total,
+                Result = result
+            };
+
+        }
+
         public async Task<Event> SubmitAttendance(int eventId, string code, int volunteerId)
         {
             var result = await _eventRepository.SubmitAttendance(eventId, code, volunteerId);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 using Volunteer.Common.Models;
@@ -10,6 +11,7 @@ using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Models.DTOs.Events;
 using Volunteer.Common.Models.DTOs.Volunteers;
+using Volunteer.Common.Services;
 using Volunteer.Common.Services.Events;
 using Volunteer.Common.Services.Organizations;
 using Volunteer.Common.Services.Users;
@@ -23,16 +25,19 @@ namespace volunteering_back.Controllers
         private readonly IEventService _eventService;
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
+        private readonly IGetExcelService _service;
         private readonly IMapper _mapper;
 
         public EventsController(IEventService eventService, 
             IOrganizationService organizationService, 
-            IUserService userService, 
+            IUserService userService,
+            IGetExcelService service,
             IMapper mapper)
         {
             _eventService = eventService;
             _organizationService = organizationService;
             _userService = userService;
+            _service = service;
             _mapper = mapper;
         }
 
@@ -254,6 +259,18 @@ namespace volunteering_back.Controllers
 
                 return BadRequest(error.Value);
             }
+        }
+
+        [Authorize]
+        [HttpGet("GetReport")]
+        public async Task<IActionResult> GetVolunteerReport([FromQuery] EventClientRequest request)
+        {
+
+            var bytes = await _service.GetVolunteerReport(request);
+            return new FileContentResult(bytes, MediaTypeNames.Application.Octet)
+            {
+                FileDownloadName = "Отчёт по волонтерам.xlsx"
+            };
         }
     }
 }

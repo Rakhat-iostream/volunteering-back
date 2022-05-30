@@ -132,6 +132,15 @@ namespace Volunteer.Dal.Repositories.Events
             return volunteers;
         }
 
+        public ICollection<Common.Models.Domain.Volunteer> GetEventAttenders(int eventId)
+        {
+            var events = _db.Events.Where(x => x.EventId == eventId).FirstOrDefault();
+
+            var volunteers = _db.Volunteers.Where(x => events.AttendedVolunteerIds.Contains(x.VolunteerId)).ToList();
+
+            return volunteers;
+        }
+
         public async Task<Event> SubmitAttendance(int eventId, string code, int volunteerId)
         {
             var events = _db.Events.FirstOrDefault(x => x.EventId == eventId && x.IsFinished == false);

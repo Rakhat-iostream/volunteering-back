@@ -58,7 +58,10 @@ namespace Volunteer.Common.Models.Domain.Enum
         Turkestan = 15,
 
         [Display(Name = "Жамбылская область")]
-        Zhambyl = 16
+        Zhambyl = 16,
+
+        [Display(Name = "Восточно-Казахстанская область")]
+        Vostok = 17,
 
     }
 }

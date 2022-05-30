@@ -19,6 +19,7 @@ namespace Volunteer.Common.Services.Events
         public Task<Event> JoinToEvent(int eventId, Models.Domain.Volunteer volunteer);
         public Task<Event> LeaveFromEvent(int eventId, Models.Domain.Volunteer volunteer);
         public Task<PageResponse<VolunteerProfileDto>> GetEventMembers(EventClientRequest request);
+        public Task<PageResponse<VolunteerProfileDto>> GetEventAttenders(EventClientRequest request);
         public Task<Event> SubmitAttendance(int eventId, string code, int volunteerId);
 
     }

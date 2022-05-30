@@ -18,6 +18,7 @@ namespace Volunteer.Common.Repositories.Events
         public Task<Event> JoinToEvent(int eventId, Models.Domain.Volunteer volunteer);
         public Task<Event> LeaveFromEvent(int eventId, Models.Domain.Volunteer volunteer);
         public ICollection<Models.Domain.Volunteer> GetEventMembers(int eventId);
+        public ICollection<Common.Models.Domain.Volunteer> GetEventAttenders(int eventId);
         public Task<Event> SubmitAttendance(int eventId, string code, int volunteerId);
     }
 }
