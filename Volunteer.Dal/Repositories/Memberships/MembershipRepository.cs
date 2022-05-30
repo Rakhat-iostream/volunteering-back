@@ -90,7 +90,8 @@ namespace Volunteer.Dal.Repositories.Memberships
         public ICollection<Common.Models.Domain.Volunteer> GetCandidates(int organizationId)
         {
             var memberships = _db.Memberships.Where(x => x.OrganizationId == organizationId 
-            && x.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.NeedOrganizationApprove).ToList();
+            && x.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.NeedOrganizationApprove
+            || x.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.NeedVolunteerApprove).ToList();
 
             //var ids = membership.VolunteerIds;
             //var id = ids.FirstOrDefault();
@@ -100,7 +101,23 @@ namespace Volunteer.Dal.Repositories.Memberships
             foreach (var membership in memberships)
             {
                 var volunteer = _db.Volunteers.Where(x => x.VolunteerId == membership.VolunteerId).ToList();
-                volunteers = volunteer;
+                volunteers.AddRange(volunteer);
+            }
+            return volunteers;
+        }
+
+        public ICollection<Common.Models.Domain.Volunteer> GetMembers(int organizationId)
+        {
+            var memberships = _db.Memberships.Where(x => x.OrganizationId == organizationId
+            && x.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.OrganizationAccepted 
+            || x.MembershipStatus == Common.Models.Domain.Enum.MembershipStatus.VolunteerAccepted).ToList();
+
+            List<Common.Models.Domain.Volunteer> volunteers = new List<Common.Models.Domain.Volunteer>();
+
+            foreach (var membership in memberships)
+            {
+                var volunteer = _db.Volunteers.Where(x => x.VolunteerId == membership.VolunteerId).ToList();
+                volunteers.AddRange(volunteer);
             }
             return volunteers;
         }

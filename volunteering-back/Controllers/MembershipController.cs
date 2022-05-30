@@ -99,7 +99,7 @@ namespace volunteering_back.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "OrganizationAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<VolunteerProfileDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -114,6 +114,35 @@ namespace volunteering_back.Controllers
                 var organization = await _organizationService.GetByUserId(user.Id);
 
                 var result = await _membershipService.GetCandidates(request, organization.OrganizationId);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                var error = new JsonResult(new
+                {
+                    statusCode = 400,
+                    message = e.Message,
+                });
+
+                return BadRequest(error.Value);
+            }
+        }
+
+        [Authorize(Roles = "OrganizationAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PageResponse<VolunteerProfileDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(JsonResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [HttpGet("organization/members")]
+        public async Task<IActionResult> GetMembers([FromQuery] PageRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var user = await _userService.GetSignedUser(cancellationToken);
+
+                var organization = await _organizationService.GetByUserId(user.Id);
+
+                var result = await _membershipService.GetMembers(request, organization.OrganizationId);
                 return Ok(result);
             }
             catch (Exception e)

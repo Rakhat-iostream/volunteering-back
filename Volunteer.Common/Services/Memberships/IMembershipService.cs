@@ -17,6 +17,7 @@ namespace Volunteer.Common.Services.Memberships
         public Task<Membership> AddMembership(MembershipAddDto model, int volunteerId);
         public Task<Membership> ChangeMembershipStatus(MembershipClientRequest clientRequest);
         public Task<PageResponse<VolunteerProfileDto>> GetCandidates(PageRequest request, int organizationId);
+        public Task<PageResponse<VolunteerProfileDto>> GetMembers(PageRequest request, int organizationId);
         public void InviteMembership(int organizationId, int volunteerId);
         public Task<Membership> ChangeVolunteerAnswer(MembershipClientRequest clientRequest);
         public Task<PageResponse<MembershipViewModel>> InvitationsList(FilterMembershipRequest request, int volunteerId);

@@ -69,6 +69,34 @@ namespace Volunteer.BL.Services.Memberships
 
         }
 
+        public async Task<PageResponse<VolunteerProfileDto>> GetMembers(PageRequest request, int organizationId)
+        {
+            var candidates = _membershipRepository.GetMembers(organizationId);
+
+            var total = candidates.Count();
+            var model = _mapper.Map<List<VolunteerProfileDto>>(candidates);
+
+            var result = model.Skip(request.Skip).Take(request.Take);
+
+            foreach (var res in result)
+            {
+                var user = _userRepository.GetAsync(res.UserId).Result;
+                res.Login = user.Login;
+                res.Phone = user.Phone;
+                res.Email = user.Email;
+                res.Avatar = user.Avatar;
+                res.FirstName = user.FirstName;
+                res.LastName = user.LastName;
+            }
+
+            return new PageResponse<VolunteerProfileDto>
+            {
+                Total = total,
+                Result = result
+            };
+
+        }
+
         public void InviteMembership(int organizationId, int volunteerId)
         {
               _membershipRepository.InviteMembership(organizationId, volunteerId);
