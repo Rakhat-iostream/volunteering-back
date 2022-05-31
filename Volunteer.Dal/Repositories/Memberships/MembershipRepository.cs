@@ -51,7 +51,7 @@ namespace Volunteer.Dal.Repositories.Memberships
 
         public async Task<Membership> ChangeRequest(MembershipClientRequest clientRequest)
         {
-            var request = _db.Memberships.FirstOrDefault(x => x.MembershipId.Equals(clientRequest.MembershipId));
+            var request = _db.Memberships.FirstOrDefault(x => x.VolunteerId.Equals(clientRequest.VolunteerId));
 
             if (request == null)
             {
