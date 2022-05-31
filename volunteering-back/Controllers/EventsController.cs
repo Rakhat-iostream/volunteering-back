@@ -84,7 +84,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpGet("list")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll([FromQuery] EventClientRequest pageRequest, CancellationToken cancellationToken)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace volunteering_back.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [HttpGet("list/organization")]
-        public async Task<IActionResult> GetAllForOrganization([FromQuery] PageRequest pageRequest,CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllForOrganization([FromQuery] EventClientRequest pageRequest,CancellationToken cancellationToken)
         {
             try
             {

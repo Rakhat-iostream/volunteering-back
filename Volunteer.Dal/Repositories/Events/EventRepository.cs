@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volunteer.Common.Models;
+using Volunteer.Common.Models.ClientRequests;
 using Volunteer.Common.Models.Domain;
 using Volunteer.Common.Repositories.Events;
 using Volunteer.Dal.SqlContext;
@@ -19,15 +20,38 @@ namespace Volunteer.Dal.Repositories.Events
             _db = db;
         }
 
-        public ICollection<Event> GetAll(PageRequest request)
+        public ICollection<Event> GetAll(EventClientRequest request)
         {
             var entity = _db.Events.ToList();
+
+            if (request.Region.HasValue)
+            {
+                entity = entity.Where(x => x.Region == request.Region).ToList();
+            }
+
+            if (request.VolunteeringCategory.HasValue)
+            {
+                entity = entity.Where(x => x.VolunteeringCategory == request.VolunteeringCategory).ToList();
+            }
+
+            if (request.IsFinished.HasValue)
+            {
+                entity = entity.Where(x => x.IsFinished == request.IsFinished).ToList();
+            }
+
+
             return entity;
         }
 
-        public ICollection<Event> GetAllForOrganization(PageRequest request, int organizationId)
+        public ICollection<Event> GetAllForOrganization(EventClientRequest request, int organizationId)
         {
             var entity = _db.Events.Where(x => x.OrganizationId == organizationId).ToList();
+
+            if (request.IsFinished.HasValue)
+            {
+                entity = entity.Where(x => x.IsFinished == request.IsFinished).ToList();
+            }
+
             return entity;
         }
 

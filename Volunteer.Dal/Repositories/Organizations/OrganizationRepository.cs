@@ -41,12 +41,32 @@ namespace Volunteer.Dal.Repositories.Organizations
                 entity = entity.Where(x => x.Region == request.Region).ToList();
             }
 
+            if (request.OrganizationTypes.HasValue)
+            {
+                entity = entity.Where(x => x.OrganizationTypes.Any(x => x == request.OrganizationTypes)).ToList();
+            }
+
+            if (request.VolunteeringCategories.HasValue)
+            {
+                entity = entity.Where(x => x.VolunteeringCategories.Any(x => x == request.VolunteeringCategories)).ToList();
+            }
+
             return entity;
         }
 
         public ICollection<Common.Models.Domain.Volunteer> GetAllVolunteers(FilterVolunteerRequest request)
         {
             var entity = _db.Volunteers.ToList();
+
+            if (request.Region.HasValue)
+            {
+                entity = entity.Where(x => x.Region == request.Region).ToList();
+            }
+
+            if (request.VolunteeringCategories.HasValue)
+            {
+                entity = entity.Where(x => x.VolunteeringCategories.Any(x => x == request.VolunteeringCategories)).ToList();
+            }
 
             return entity;
         }
