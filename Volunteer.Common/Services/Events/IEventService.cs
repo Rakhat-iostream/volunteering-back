@@ -10,8 +10,8 @@ namespace Volunteer.Common.Services.Events
     public interface IEventService
     {
         public Task<EventViewDto> GetAsync(int eventId);
-        public Task<PageResponse<EventViewDto>> GetAll(PageRequest request);
-        public Task<PageResponse<EventViewDto>> GetAllForOrganization(PageRequest pageRequest, int organizationId);
+        public Task<PageResponse<EventViewDto>> GetAll(EventClientRequest request);
+        public Task<PageResponse<EventViewDto>> GetAllForOrganization(EventClientRequest pageRequest, int organizationId);
         public Task<EventViewDto> CreateAsync(EventAddDto dto, Organization organization);
         public Task<EventViewDto> UpdateAsync(EventUpdateDto dto);
         public void CompleteEvent(int eventId);

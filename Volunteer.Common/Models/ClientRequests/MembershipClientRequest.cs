@@ -9,6 +9,7 @@ namespace Volunteer.Common.Models.ClientRequests
 {
     public class MembershipClientRequest
     {
+        public int? VolunteerId { get; set; }
         public int? MembershipId { get; set; }
         public MembershipStatus? MembershipStatus { get; set; }
     }

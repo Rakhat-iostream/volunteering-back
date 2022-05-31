@@ -12,6 +12,7 @@ using Volunteer.Common.Models.DTOs.Events;
 using Volunteer.Common.Models.DTOs.Volunteers;
 using Volunteer.Common.Repositories.Events;
 using Volunteer.Common.Repositories.Organizations;
+using Volunteer.Common.Repositories.Users;
 using Volunteer.Common.Services.Events;
 
 namespace Volunteer.BL.Services.Events
@@ -20,12 +21,17 @@ namespace Volunteer.BL.Services.Events
     {
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IEventRepository _eventRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public EventService(IOrganizationRepository organizationRepository, IEventRepository eventRepository, IMapper mapper)
+        public EventService(IOrganizationRepository organizationRepository, 
+            IEventRepository eventRepository,
+            IUserRepository userRepository,
+            IMapper mapper)
         {
             _organizationRepository = organizationRepository;
             _eventRepository = eventRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -35,7 +41,7 @@ namespace Volunteer.BL.Services.Events
             return _mapper.Map<Event, EventViewDto>(events);
         }
 
-        public async Task<PageResponse<EventViewDto>> GetAll(PageRequest request)
+        public async Task<PageResponse<EventViewDto>> GetAll(EventClientRequest request)
         {
             var organizations = _eventRepository.GetAll(request);
 
@@ -52,7 +58,7 @@ namespace Volunteer.BL.Services.Events
             };
         }
 
-        public async Task<PageResponse<EventViewDto>> GetAllForOrganization(PageRequest request, int organizationId)
+        public async Task<PageResponse<EventViewDto>> GetAllForOrganization(EventClientRequest request, int organizationId)
         {
             var events = _eventRepository.GetAllForOrganization(request, organizationId);
 
@@ -131,12 +137,23 @@ namespace Volunteer.BL.Services.Events
 
         public async Task<PageResponse<VolunteerProfileDto>> GetEventMembers(EventClientRequest request)
         {
-            var candidates = _eventRepository.GetEventMembers(request.EventId ?? 0);
+            var members = _eventRepository.GetEventMembers(request.EventId ?? 0);
 
-            var total = candidates.Count();
-            var model = _mapper.Map<List<VolunteerProfileDto>>(candidates);
+            var total = members.Count();
+            var model = _mapper.Map<List<VolunteerProfileDto>>(members);
 
             var result = model.Skip(request.Skip).Take(request.Take);
+
+            foreach (var res in result)
+            {
+                var user = _userRepository.GetAsync(res.UserId).Result;
+                res.Login = user.Login;
+                res.Phone = user.Phone;
+                res.Email = user.Email;
+                res.Avatar = user.Avatar;
+                res.FirstName = user.FirstName;
+                res.LastName = user.LastName;
+            }
 
             return new PageResponse<VolunteerProfileDto>
             {
@@ -154,6 +171,17 @@ namespace Volunteer.BL.Services.Events
             var model = _mapper.Map<List<VolunteerProfileDto>>(attenders);
 
             var result = model.Skip(request.Skip).Take(request.Take);
+
+            foreach (var res in result)
+            {
+                var user = _userRepository.GetAsync(res.UserId).Result;
+                res.Login = user.Login;
+                res.Phone = user.Phone;
+                res.Email = user.Email;
+                res.Avatar = user.Avatar;
+                res.FirstName = user.FirstName;
+                res.LastName = user.LastName;
+            }
 
             return new PageResponse<VolunteerProfileDto>
             {
